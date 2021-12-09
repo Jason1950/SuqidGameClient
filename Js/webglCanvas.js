@@ -18,7 +18,7 @@ animate();
 function init() {
 
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-    camera.position.set( 100, 200, 250 );
+    camera.position.set( 0, 100, 250 );
 
     scene = new THREE.Scene();
     // scene.background = new THREE.Color( 0xf5c1bd );
@@ -40,11 +40,42 @@ function init() {
 
     // scene.add( new THREE.CameraHelper( dirLight.shadow.camera ) );
 
+    // texture
+    var materials = [
+        new THREE.MeshPhongMaterial( { color: 0xfbfbfb, depthWrite: false } ),
+        new THREE.MeshPhongMaterial( { color: 0xfbfbfb, depthWrite: false } ),
+        new THREE.MeshPhongMaterial( { color: 0xfbfbfb, depthWrite: false } ),
+        new THREE.MeshPhongMaterial( { color: 0xfbfbfb, depthWrite: false } ),
+        new THREE.MeshLambertMaterial({
+            map: THREE.ImageUtils.loadTexture('../3dfile/devil-head.jpg')
+        }),
+        new THREE.MeshPhongMaterial( { color: 0xfbfbfb, depthWrite: false } )
+     ];
+
     // ground
     const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 20, 20 ), new THREE.MeshPhongMaterial( { color: 0x932119, depthWrite: false } ) );
     mesh.rotation.x = - Math.PI / 2;
     mesh.receiveShadow = true;
     scene.add( mesh );
+
+    const headSize = 30;
+    const roseHead = new THREE.Mesh(
+        new THREE.BoxGeometry(headSize, headSize, headSize), //object that contains all the points and faces of the cube
+        // new THREE.MeshPhongMaterial({ color: 0xfbfbfb })
+        materials
+    )
+    // var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 }); //material that colors the box
+    roseHead.name = 'roseHead';
+    roseHead.receiveShadow = true;
+    roseHead.rotation.x = 0.2
+    scene.add(roseHead);
+
+
+    let cube000 = scene.getObjectByName( "roseHead" );
+    // cube000.position.z += 130;
+    // cube000.position.x -= 50;
+    cube000.position.y = 170;
+
 
     const grid = new THREE.GridHelper( 20, 20, 0x000000, 0x000000 );
     grid.material.opacity = 0.2;
@@ -84,7 +115,7 @@ function init() {
             mixer = new THREE.AnimationMixer( object );
             action = mixer.clipAction( object.animations[0] );
             console.log('action : ', action);
-            action.play();
+            // action.play();
             object.traverse( function ( child ) {
                 if ( child.isMesh ) {
                     child.castShadow = true;
@@ -92,8 +123,8 @@ function init() {
                     child.material = man_mtl;
                 }
             } );
-            object.scale.multiplyScalar(10.10); 
-            object.rotation.y = 2.8
+            object.scale.multiplyScalar(7.10); 
+            object.rotation.y = 3.14
             console.log(object.name);
             groupBoy.add( object );
             // scene.add( object );
@@ -119,19 +150,20 @@ function init() {
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth*resizePara, window.innerHeight*resizePara );
     renderer.shadowMap.enabled = true;
+    // renderer.shadowMapEnabled = true;
 
-    const controls = new OrbitControls( camera, renderer.domElement );
-    controls.maxPolarAngle = Math.PI / 2 - 0.11;
-    controls.minPolarAngle = Math.PI / 3 - 0.15;
-    controls.maxAzimuthAngle = Math.PI *1/4 ;   //from 120 ~ -180 degree 
-    controls.minAzimuthAngle = -Math.PI *2/3 ;
-    controls.enableZoom = false;
-    controls.dampingFactor = 0.1;
-    // controls.autoRotate = false; // Toggle this if you'd like the chair to automatically rotate
-    // controls.autoRotateSpeed = 0.2; // 30
+    // const controls = new OrbitControls( camera, renderer.domElement );
+    // controls.maxPolarAngle = Math.PI / 2 - 0.11;
+    // controls.minPolarAngle = Math.PI / 3 - 0.15;
+    // controls.maxAzimuthAngle = Math.PI *1/4 ;   //from 120 ~ -180 degree 
+    // controls.minAzimuthAngle = -Math.PI *2/3 ;
+    // controls.enableZoom = false;
+    // controls.dampingFactor = 0.1;
+    // // controls.autoRotate = false; // Toggle this if you'd like the chair to automatically rotate
+    // // controls.autoRotateSpeed = 0.2; // 30
 
-    controls.target.set( 0, 100, 0 );
-    controls.update();
+    // controls.target.set( 0, 100, 0 );
+    // controls.update();
     window.addEventListener( 'resize', onWindowResize );
 }
 
@@ -147,5 +179,9 @@ function animate() {
     if ( mixer ) mixer.update( delta );
 
     renderer.render( scene, camera );
+
+    // let manModel = scene.getObjectByName( "groupBoy" );
+    // manModel.rotation.y += 0.003130;
+    // console.log(manModel.rotation.y)
 
 }
