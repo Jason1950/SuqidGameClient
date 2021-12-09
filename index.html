@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwVShzViQIbBBQjW5BYaPkD1ctm7ZlFkf0alJ7TIFwT13ejB3S31nDMwy9XD6V-QyuA0w&usqp=CAU" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rose Game</title>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- AXios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- Shake js -->
+    <script src="./Js/shakeLib.js"></script>
+    <script src="./Js/shakeInit.js" type="module"></script>
+
+    <!-- Step fade css -->
+    <link rel="stylesheet" href="./Css/state.css">
+
+    <script src="./Js/stateAPI.js" type="module"></script>
+    <script src="./Js/countFunction.js" type="module"></script>
+
+
+</head>
+<body>
+    <div class="main3">
+        <div class="stateClass">non</div>
+        <div class="countClass">步數 : 0</div>
+    </div>
+
+    <div class="main4-out">
+         O U T ! 
+    </div>
+    <button id="testCountButton" style="position: absolute;bottom:10%" >count</button>
+
+</body>
+
+<script>
+    $(".main4-out").hide();
+</script>
+
+</html>
