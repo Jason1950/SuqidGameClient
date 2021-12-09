@@ -14,8 +14,8 @@ function shakeEventDidOccur () {
 
     // check the alive state, if die then UI go dwon gray!
     if(apiTurnState) {
-        $('.main3').delay(100).fadeOut(200);
-        $('.main4-out').delay(100).fadeIn(200);
+        $('.main3').delay(1000).fadeOut(200);
+        $('.main4-out').delay(1000).fadeIn(200);
     }
     
     // update count UI
