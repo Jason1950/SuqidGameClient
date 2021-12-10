@@ -34,7 +34,7 @@ function stateOutput(){
     setTimeout(()=>{
         console.log('clear !!')
         clearInterval(temp)
-    },30000)
+    },600000)
 })()
 
 

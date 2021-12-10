@@ -32,19 +32,44 @@
 <body>
     <div class="main3">
         <div class="stateClass">non</div>
-        <div class="countClass">步數 : 0</div>
+        <div class="countClass">步數 : 0 / 300</div>
         <canvas id="main3-canvas"></canvas>
     </div>
 
     <div class="main4-out">
          O U T ! 
     </div>
-    <button id="testCountButton" style="position: absolute;bottom:10%" >Run</button>
+
+    <div class="main5-win">
+        W I N ! 
+   </div>
+    <!-- <button id="testCountButton"  >Run</button> -->
+    <button id="iosCheckButton"  >ios Check</button>
 
 </body>
 
 <script>
     $(".main4-out").hide();
+    $(".main5-win").hide();
+
+    $("#iosCheckButton").click(
+        () => {
+            if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                DeviceMotionEvent.requestPermission().then(permissionState => {
+                    if (permissionState === 'granted') {
+                        shakeInit() //搖一搖
+                    } else if(permissionState === 'denied'){// 開啟的連結不是https開頭
+                        alert("當前IOS系統拒絕訪問動作與方向。請退出微信，重新進入活動頁面獲取許可權。")
+                    }
+                }).catch((error) => {
+                    alert("請求裝置方向或動作訪問需要使用者手勢來提示")
+                })
+            } else {
+                // 處理常規的非iOS 13+裝置
+                alert("處理常規的非iOS 13+裝置")
+            }
+        }
+    )
 </script>
 
 </html>

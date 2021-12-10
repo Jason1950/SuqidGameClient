@@ -17,14 +17,22 @@ function shakeEventDidOccur () {
         $('.main3').delay(1000).fadeOut(200);
         $('.main4-out').delay(1000).fadeIn(200);
     }
+
+    if(count == 299) {
+        // $('.main3').delay(300).fadeOut(200);
+        $('.main5-win').delay(100).fadeIn(200);
+    }
     
     // update count UI
-    count += 1;
-    $(".countClass").text(`步數 : ${count} `);
+    if(count<300) count += 1;
+    $(".countClass").text(`步數 : ${count} / 300 `);
+
+    
 
 }
 
 // test button and don't need real shake
 $('#testCountButton').click(
+    // count += 290,
     shakeEventDidOccur
 );
