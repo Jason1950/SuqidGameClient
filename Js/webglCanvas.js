@@ -14,6 +14,8 @@ let action;
 var canvas;
 
 const resizePara = 1; //4/5;
+const floorSize = 12000;
+
 
 let apiTurnState = false;
 let lastApiTurnState = false;
@@ -29,8 +31,11 @@ function init() {
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
     camera.position.set( 0, 100, 250 );
     scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0xa0a0a0 );
-    // scene.fog = new THREE.Fog( 0xa0a0a0, 200, 1000 );
+
+    let bg_txt = new THREE.TextureLoader().load('../3dfile/background.jpg');
+    scene.background = new THREE.TextureLoader().load('../3dfile/background.jpg');
+    // scene.background = new THREE.Color( 0xa0a0a0 );
+    // scene.fog = new THREE.Fog( 0xa0a0a0, 200, 2000 );
 
     const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
     hemiLight.position.set( 0, 200, 0 );
@@ -61,9 +66,25 @@ function init() {
      ];
 
     // ground
-    const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 20, 20 ), new THREE.MeshPhongMaterial( { color: 0x932119, depthWrite: false } ) );
+
+    let floor_txt = new THREE.TextureLoader().load('../3dfile/floor.jpg');
+    floor_txt.wrapS = floor_txt.wrapT = THREE.RepeatWrapping;
+    floor_txt.offset.set( 0, 0 );
+    floor_txt.repeat.set( 4, 40 ); // 橫向、直向 複製
+    var material = new THREE.MeshPhongMaterial( {
+        color: 0xffffff,
+        specular:0x111111,
+        shininess: 10,
+        map: floor_txt,
+    } );
+    const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 180, floorSize ), // new THREE.MeshPhongMaterial( { color: 0x932119, depthWrite: false } ) 
+        material
+    );
     mesh.rotation.x = - Math.PI / 2;
     mesh.receiveShadow = true;
+    mesh.position.y = 1;
+    mesh.position.z -= floorSize/2;
+    mesh.name = 'floor';
     scene.add( mesh );
 
     const headSize = 30;
@@ -75,10 +96,18 @@ function init() {
     roseHead.receiveShadow = true;
     roseHead.rotation.x = 0.2
     scene.add(roseHead);
-
-
     let cube000 = scene.getObjectByName( "roseHead" );
     cube000.position.y = 170;
+
+
+    const standCube = new THREE.Mesh(
+        new THREE.BoxGeometry(120, 50, 50), //object that contains all the points and faces of the cube
+        new THREE.MeshPhongMaterial( { color: 0xC63300, depthWrite: true } )
+    )
+    standCube.receiveShadow = true;
+    standCube.position.z = -1550;
+    standCube.name = 'standCube';
+    scene.add(standCube);
 
 
     const grid = new THREE.GridHelper( 20, 20, 0x000000, 0x000000 );
@@ -95,8 +124,11 @@ function init() {
         // const animationsRokoko = await modelLoader('./3dfile/man_Idle.fbx');
         // https://goodtrace-kouhu.appxervice.com/static/media/tilapia2.796f3975.jpg
         // https://penueling.com/wp-content/uploads/2020/11/ReactNative.png
-
+        // https://d1xeexhxuygkal.cloudfront.net/apple.jpg
+        
         // const man_txt = new THREE.TextureLoader().load('../3dfile/boy2.png');
+        // const man_txt = new THREE.TextureLoader().load('https://goodtrace-kouhu.appxervice.com/static/media/tilapia2.796f3975.jpg');
+        // const man_txt = new THREE.TextureLoader().load('https://d1xeexhxuygkal.cloudfront.net/apple.jpg');
         const man_txt = new THREE.TextureLoader().load('../3dfile/playerA_1_new_boy_BaseColor.png');
         // loader.load( '../3dfile/playerA_1_run.fbx', function ( object ) {
         loader.load( '../3dfile/run.fbx', function ( object ) {
@@ -166,6 +198,8 @@ function animate() {
     if ( mixer ) mixer.update( delta );
     renderer.render( scene, camera );
     headRotationFunction()
+
+    floorCome()
 }
 
 
@@ -188,6 +222,16 @@ function onDocumentKeyDown(event) {
             {
                 y: cube000.rotation.y+Math.PI, ease: Linear.easeNone
             });
+    } else if (keyCode == 66) {     
+        // ******* b = 66 ********* //
+        let cube000 = scene.getObjectByName( "standCube" );
+        cube000.position.z -= 3;
+        console.log('z: ', cube000.position.z);
+    } else if (keyCode == 86) {     
+        // ******* v = 86 ********* //
+        let cube000 = scene.getObjectByName( "standCube" );
+        cube000.position.z += 3;
+        console.log('z: ', cube000.position.z);
     }
 }
 
@@ -201,6 +245,11 @@ function headRotationFunction(){
             });
     }
     lastApiTurnState = apiTurnState;
+}
+
+function floorCome(){
+    let floorObject = scene.getObjectByName( "floor" );
+    floorObject.position.z += 1.5;
 }
 
 

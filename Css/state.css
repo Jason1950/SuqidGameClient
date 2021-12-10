@@ -3,7 +3,8 @@
     left: 5%;
     top: 2%;
     font-size: 1.1em;
-    font-weight: 500;
+    font-weight: 600;
+    color: #fff;
 }
 
 .countClass{
@@ -11,7 +12,9 @@
     right: 5%;
     top: 2%;
     font-size: 1.1em;
-    font-weight: 500;  
+    font-weight: 600;  
+    color: #fff;
+
 }
 
 .main4-out{
