@@ -6,43 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Rose Game</title>
+    
+    <!-- Step fade css -->
+    <link rel="stylesheet" href="./Css/state.css">
 
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- AXios -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>console.log('after log')</script>
 
-    <!-- Shake js -->
-    <script src="./Js/shakeLib.js"></script>
-    <script src="./Js/shakeInit.js" type="module"></script>
 
-    <!-- Step fade css -->
-    <link rel="stylesheet" href="./Css/state.css">
-
-    <!--Tween-->
-    <script type="text/javascript" src="./Js/jsm/greensock/TweenMax.min.js"></script>
-
-    <script src="./Js/stateAPI.js" type="module"></script>
-    <script src="./Js/countFunction.js" type="module"></script>
-    <script src="./Js/webglCanvas.js" type="module"></script>
     <script>
-        try {
-            // ReferenceError
-            // foo++;              
+        try {            
             var cookieName = localStorage.getItem("cookieName");
             console.log('try :',cookieName)
         } catch (exception) {
-            //  ReferenceError: foo is not defined
+
             console.log(`${exception.name}: ${exception.message}`)
         }
-
-        // save data value
-
-        // localStorage.setItem("cookieName", "");
-
-        // retrieve data value
-
         var cookieName = localStorage.getItem("cookieName");
         console.log(cookieName ,cookieName.length)
         if(cookieName.length<1){
@@ -55,10 +36,25 @@
 
             if (refeshCount ==1 ) location.reload()
         }
-
-        
-
     </script>
+
+    <script>console.log('before log')</script>
+
+    <!-- AXios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- Shake js -->
+    <script src="./Js/shakeLib.js"></script>
+    <script src="./Js/shakeInit.js" type="module"></script>
+
+    <!--Tween-->
+    <script type="text/javascript" src="./Js/jsm/greensock/TweenMax.min.js"></script>
+
+    <!-- Other Js file -->
+    <script src="./Js/stateAPI.js" type="module"></script>
+    <script src="./Js/countFunction.js" type="module"></script>
+    <script src="./Js/webglCanvas.js" type="module"></script>
+
 
 
 </head>
