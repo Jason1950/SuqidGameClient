@@ -1,9 +1,18 @@
 
-import * as THREE from './build/three.module.js';
-import { OrbitControls } from './jsm/controls/OrbitControls.js';
-import { FBXLoader } from './jsm/loaders/FBXLoader.js';
-import stateOutput from './stateAPI.js'
+// locoal file
+// import * as THREE from '../build/three.module.js';
+// import { OrbitControls } from './jsm/controls/OrbitControls.js';
+// import { FBXLoader } from './jsm/loaders/FBXLoader.js';
 
+let  AWSPath = 'https://d1xeexhxuygkal.cloudfront.net/S3webgl'
+
+// aws file
+import * as THREE from 'https://d1xeexhxuygkal.cloudfront.net/S3webgl/build/three.module.js';
+import { FBXLoader } from 'https://d1xeexhxuygkal.cloudfront.net/S3webgl/export/jsm/loaders/FBXLoader.js';
+import {stateOutput} from './stateAPI.js'
+
+// https://d1xeexhxuygkal.cloudfront.net/S3webgl/export/jsm
+// https://d1xeexhxuygkal.cloudfront.net/S3webgl/build
 
 
 let camera, scene, renderer, stats;
@@ -32,8 +41,8 @@ function init() {
     camera.position.set( 0, 100, 250 );
     scene = new THREE.Scene();
 
-    let bg_txt = new THREE.TextureLoader().load('../3dfile/background.jpg');
-    scene.background = new THREE.TextureLoader().load('../3dfile/background.jpg');
+    scene.background = new THREE.TextureLoader().load(AWSPath+'/3dfile/background.jpg');
+    // scene.background = new THREE.TextureLoader().load('../3dfile/background.jpg');
     // scene.background = new THREE.Color( 0xa0a0a0 );
     // scene.fog = new THREE.Fog( 0xa0a0a0, 200, 2000 );
 
@@ -58,16 +67,19 @@ function init() {
         new THREE.MeshPhongMaterial( { color: 0xfbfbfb, depthWrite: false } ),
         new THREE.MeshPhongMaterial( { color: 0xfbfbfb, depthWrite: false } ),
         new THREE.MeshLambertMaterial({
+            // map: THREE.ImageUtils.loadTexture(AWSPath+'/3dfile/back.jpg')
             map: THREE.ImageUtils.loadTexture('../3dfile/back.jpg')
         }),
         new THREE.MeshLambertMaterial({
+            // map: THREE.ImageUtils.loadTexture(AWSPath+'/3dfile/back.jpg')
             map: THREE.ImageUtils.loadTexture('../3dfile/devil-head.jpg')
         })
      ];
 
     // ground
 
-    let floor_txt = new THREE.TextureLoader().load('../3dfile/floor.jpg');
+    let floor_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/floor.jpg');
+    // let floor_txt = new THREE.TextureLoader().load('../3dfile/floor.jpg');
     floor_txt.wrapS = floor_txt.wrapT = THREE.RepeatWrapping;
     floor_txt.offset.set( 0, 0 );
     floor_txt.repeat.set( 4, 40 ); // 橫向、直向 複製
@@ -92,12 +104,12 @@ function init() {
         new THREE.BoxGeometry(headSize, headSize, headSize), //object that contains all the points and faces of the cube
         materials
     )
-    roseHead.name = 'roseHead';
-    roseHead.receiveShadow = true;
-    roseHead.rotation.x = 0.2
-    scene.add(roseHead);
-    let cube000 = scene.getObjectByName( "roseHead" );
-    cube000.position.y = 170;
+    // roseHead.name = 'roseHead';
+    // roseHead.receiveShadow = true;
+    // roseHead.rotation.x = 0.2
+    // scene.add(roseHead);
+    // let cube000 = scene.getObjectByName( "roseHead" );
+    // cube000.position.y = 170;
 
 
     const standCube = new THREE.Mesh(
@@ -125,13 +137,17 @@ function init() {
         // https://goodtrace-kouhu.appxervice.com/static/media/tilapia2.796f3975.jpg
         // https://penueling.com/wp-content/uploads/2020/11/ReactNative.png
         // https://d1xeexhxuygkal.cloudfront.net/apple.jpg
+        // https://d1xeexhxuygkal.cloudfront.net/run.fbx
         
         // const man_txt = new THREE.TextureLoader().load('../3dfile/boy2.png');
         // const man_txt = new THREE.TextureLoader().load('https://goodtrace-kouhu.appxervice.com/static/media/tilapia2.796f3975.jpg');
         // const man_txt = new THREE.TextureLoader().load('https://d1xeexhxuygkal.cloudfront.net/apple.jpg');
-        const man_txt = new THREE.TextureLoader().load('../3dfile/playerA_1_new_boy_BaseColor.png');
+        const man_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/playerA_1_new_boy_BaseColor.png');
+        // const man_txt = new THREE.TextureLoader().load('../3dfile/playerA_1_new_boy_BaseColor.png');
         // loader.load( '../3dfile/playerA_1_run.fbx', function ( object ) {
-        loader.load( '../3dfile/run.fbx', function ( object ) {
+        loader.load(AWSPath+'/3dfile/run.fbx', function ( object ) {
+            // loader.load( 'https://d1xeexhxuygkal.cloudfront.net/run.fbx', function ( object ) {
+        // loader.load( '../3dfile/run.fbx', function ( object ) {
         // loader.load( '../3dfile/boy2.fbx', function ( object ) {
 
             man_txt.flipY = true; // we flip the texture so that its the right way up
@@ -170,6 +186,31 @@ function init() {
     });
 
 
+
+    loader.load('../3dfile/wolf-head.fbx', function ( object ) {
+    // loader.load(AWSPath+'/3dfile/head.fbx', function ( object ) {
+        console.log('load test !')
+
+
+        object.traverse( function ( child ) {
+            if ( child.isMesh ) {
+                child.castShadow = false;
+                child.receiveShadow = false;
+                // child.material = man_mtl;
+            }
+        } );
+        object.scale.multiplyScalar(0.1); 
+        object.rotation.y = 3.14
+        object.rotation.x = 0.14
+        object.position.y = 170
+        console.log(object.name);
+        object.name = 'roseHead';
+
+        scene.add( object );
+    } );
+
+
+
     
     canvas = document.getElementById("main3-canvas");
     console.log(canvas);
@@ -179,8 +220,10 @@ function init() {
     renderer.setSize( window.innerWidth*resizePara, window.innerHeight*resizePara );
     renderer.shadowMap.enabled = true;
 
-    window.addEventListener( 'resize', onWindowResize );
+    // window.addEventListener( 'resize', onWindowResize );
     document.addEventListener("keydown", onDocumentKeyDown, false);
+
+    onWindowResize();
 
 }
 
@@ -236,7 +279,7 @@ function onDocumentKeyDown(event) {
 }
 
 function headRotationFunction(){
-    apiTurnState = stateOutput.stateOutput();
+    apiTurnState = stateOutput();
     if(lastApiTurnState != apiTurnState){
         let cube000 = scene.getObjectByName( "roseHead" );
         TweenMax.to(cube000.rotation, 0.3, 

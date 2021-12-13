@@ -1,4 +1,4 @@
-import stateOutput from './stateAPI.js'
+import {stateOutput} from './stateAPI.js'
 
 // para init
 let count = 0
@@ -10,7 +10,7 @@ window.addEventListener('shake', shakeEventDidOccur, false);
 function shakeEventDidOccur () {
 
     // get api turn state from stateAPI.js with function
-    let apiTurnState = stateOutput.stateOutput()
+    let apiTurnState = stateOutput()
 
     // check the alive state, if die then UI go dwon gray!
     if(apiTurnState) {
@@ -27,7 +27,14 @@ function shakeEventDidOccur () {
     if(count<300) count += 1;
     $(".countClass").text(`步數 : ${count} / 300 `);
 
-    
+}
+
+function reCount(){
+    count = 0;
+    $('.main4-out').delay(100).fadeOut(200);
+    $('.main3').delay(100).fadeIn(200);
+    $(".countClass").text(`步數 : ${count} / 300 `);
+
 
 }
 
@@ -36,3 +43,5 @@ $('#testCountButton').click(
     // count += 290,
     shakeEventDidOccur
 );
+
+export {reCount}

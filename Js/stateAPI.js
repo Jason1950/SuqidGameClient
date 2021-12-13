@@ -38,4 +38,28 @@ function stateOutput(){
 })()
 
 
-export default {stateOutput};
+
+async function registNameAPI(name){
+
+    const data = JSON.stringify({
+        "username": name,
+        "color": "G"
+    });
+    
+    let response = await axios.post('https://core-srv-dev.appxervice.com/api/squid/createUser',
+        data,    
+        headConst
+    )
+
+    // debug messege
+    console.log( response.data.result.uuid);
+    
+    $(".uuidClass").text(`uuid : ${response.data.result.uuid}`)
+
+    // // update api Turn State for game rules
+    // apiTurnState =  response.data.result.turn;
+}
+
+
+
+export {stateOutput, registNameAPI};

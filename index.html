@@ -26,50 +26,108 @@
     <script src="./Js/stateAPI.js" type="module"></script>
     <script src="./Js/countFunction.js" type="module"></script>
     <script src="./Js/webglCanvas.js" type="module"></script>
+    <script>
+        try {
+            // ReferenceError
+            // foo++;              
+            var cookieName = localStorage.getItem("cookieName");
+            console.log('try :',cookieName)
+        } catch (exception) {
+            //  ReferenceError: foo is not defined
+            console.log(`${exception.name}: ${exception.message}`)
+        }
+
+        // save data value
+
+        // localStorage.setItem("cookieName", "");
+
+        // retrieve data value
+
+        var cookieName = localStorage.getItem("cookieName");
+        console.log(cookieName ,cookieName.length)
+        if(cookieName.length<1){
+            // $("a").attr("href", "http://www.google.com/")
+            location.href = './regist.html'
+        }else{
+            var refeshCount = localStorage.getItem("refreshCount");
+            refeshCount += 1;
+            localStorage.setItem("refreshCount",refeshCount);
+
+            if (refeshCount ==1 ) location.reload()
+        }
+
+        
+
+    </script>
 
 
 </head>
 <body>
+    <!-- <div class="main2-regist">
+        <div id="content1">1 2 3 玫瑰人</div>
+        <div id="content2">遊戲名稱</div>
+        <input id="content3" required autofocus>
+        <button id="registButton">註 冊</button>  
+    </div> -->
     <div class="main3">
         <div class="stateClass">non</div>
+        <div class="nameClass">Unregister</div>
         <div class="countClass">步數 : 0 / 300</div>
+        <div class="uuidClass">uuid: undefined</div>
+        <button class="re-regist">Log-out</button>
         <canvas id="main3-canvas"></canvas>
     </div>
 
     <div class="main4-out">
-         O U T ! 
+        失敗 !
+        <button id="refightButton">重新挑戰</button>
     </div>
 
     <div class="main5-win">
         W I N ! 
    </div>
     <!-- <button id="testCountButton"  >Run</button> -->
-    <button id="iosCheckButton"  >ios Check</button>
 
 </body>
-
 <script>
-    $(".main4-out").hide();
-    $(".main5-win").hide();
+        // console.log('dif scope:',name)
+        // $(".main2-regist").hide()
+        // $(".main3").hide()
+        $(".main4-out").hide();
+        $(".main5-win").hide();
+</script>
+<script type="module">
+    import {registNameAPI} from './Js/stateAPI.js'
+    import {reCount} from './Js/countFunction.js'
+    
+    $('#refightButton').click(()=>{
+        reCount()
+    })
 
-    $("#iosCheckButton").click(
-        () => {
-            if (typeof DeviceMotionEvent.requestPermission === 'function') {
-                DeviceMotionEvent.requestPermission().then(permissionState => {
-                    if (permissionState === 'granted') {
-                        shakeInit() //搖一搖
-                    } else if(permissionState === 'denied'){// 開啟的連結不是https開頭
-                        alert("當前IOS系統拒絕訪問動作與方向。請退出微信，重新進入活動頁面獲取許可權。")
-                    }
-                }).catch((error) => {
-                    alert("請求裝置方向或動作訪問需要使用者手勢來提示")
-                })
-            } else {
-                // 處理常規的非iOS 13+裝置
-                alert("處理常規的非iOS 13+裝置")
-            }
+    $('.re-regist').click(()=>{
+        
+        if (confirm('您是否要重新註冊遊戲角色?')) {
+            // yourformelement.submit();
+            localStorage.setItem("cookieName", '');
+
+            location.href = './regist.html'
+
+        } else {
+            return false;
         }
-    )
+    
+
+    })
+
+
+    // let value = $('#content3').val();
+    console.log('value 54',cookieName);
+    $(".nameClass").text(`ID : ${cookieName}`);
+    // $(input).attr('disable', true)
+    // $("#content3").prop('disabled', true);
+    registNameAPI(cookieName)
+
+    
 </script>
 
 </html>
