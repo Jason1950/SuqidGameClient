@@ -35,7 +35,10 @@ function reCount(){
     $('.main3').delay(100).fadeIn(200);
     $(".countClass").text(`步數 : ${count} / 300 `);
 
+}
 
+function countReturn(){
+    return count;
 }
 
 // test button and don't need real shake
@@ -44,4 +47,4 @@ $('#testCountButton').click(
     shakeEventDidOccur
 );
 
-export {reCount}
+export {reCount, countReturn}
