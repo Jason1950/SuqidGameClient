@@ -9,36 +9,44 @@
     
     <!-- Step fade css -->
     <link rel="stylesheet" href="./Css/state.css">
+    <link rel="stylesheet" href="./Css/fade4.css">
 
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script>console.log('after log')</script>
-
-
     <script>
         try {            
             var cookieName = localStorage.getItem("cookieName");
-            console.log('try :',cookieName)
+            var cookieUuid = localStorage.getItem("cookieUuid");
+            console.log('try cookie name :',cookieName, ' , and lenth : ', cookieName.length, ' , uuid: ',cookieUuid)
+            
         } catch (exception) {
 
             console.log(`${exception.name}: ${exception.message}`)
         }
-        var cookieName = localStorage.getItem("cookieName");
-        console.log(cookieName ,cookieName.length)
-        if(cookieName.length<1){
-            // $("a").attr("href", "http://www.google.com/")
-            location.href = './regist.html'
-        }else{
-            var refeshCount = localStorage.getItem("refreshCount");
-            refeshCount += 1;
-            localStorage.setItem("refreshCount",refeshCount);
-
-            if (refeshCount ==1 ) location.reload()
-        }
+     
     </script>
 
-    <script>console.log('before log')</script>
+    <script>
+
+        var detectBrowser = {
+            isIOs: () => /iPad|iPhone|iPod/.test(navigator.userAgent),
+            isIpad: () => {
+                if (/iPad/i.test(navigator.userAgent)) {
+                return true;
+                }
+                if (/Macintosh/i.test(navigator.userAgent)) {
+                try {
+                    document.createEvent('TouchEvent');
+                    return true;
+                } catch (e) {}
+                }
+                return false;
+            },
+        }
+
+        console.log(detectBrowser.isIOs()) // true or false
+    </script>
 
     <!-- AXios -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -56,20 +64,34 @@
     <script src="./Js/webglCanvas.js" type="module"></script>
 
 
-
 </head>
 <body>
-    <!-- <div class="main2-regist">
+    <div class="main1-permision">
+        <div id="fade4-block">
+            <img id="fade4-shake" src="https://cdn-icons-png.flaticon.com/512/1527/1527496.png">
+        </div>
+        <button id="permisionButton">Start</button>
+    </div>
+    <div class="main2-regist">
         <div id="content1">1 2 3 玫瑰人</div>
         <div id="content2">遊戲名稱</div>
         <input id="content3" required autofocus>
         <button id="registButton">註 冊</button>  
+    </div>
+
+    <!-- <div class="fade4"> 
+        <h1 id="fade4-title" >SHAKE IT ! !</h1>
+        <div id="fade4-block">
+            <img id="fade4-shake" src="https://cdn-icons-png.flaticon.com/512/1527/1527496.png">
+        </div>
     </div> -->
+
     <div class="main3">
         <div class="stateClass">non</div>
+        <div class="iosClass">ios : no</div>
         <div class="nameClass">Unregister</div>
         <div class="countClass">步數 : 0 / 300</div>
-        <div class="uuidClass">uuid: undefined</div>
+        <div class="uuidClass">uuid: </div>
         <button class="re-regist">Log-out</button>
         <canvas id="main3-canvas"></canvas>
     </div>
@@ -86,11 +108,24 @@
 
 </body>
 <script>
-        // console.log('dif scope:',name)
-        // $(".main2-regist").hide()
-        // $(".main3").hide()
+        $(".uuidClass").text(`uuid : ${cookieUuid}`)
+
+
         $(".main4-out").hide();
         $(".main5-win").hide();
+        if(cookieName==null){
+            $(".main3").hide()
+            $(".main1-permision").hide()
+        }
+        else if(cookieName.length<1){
+            $(".main3").hide()
+            $(".main1-permision").hide()
+        }else{
+            var refeshCount = localStorage.getItem("refreshCount");
+            refeshCount += 1;
+            localStorage.setItem("refreshCount",refeshCount);
+            $(".main2-regist").hide()
+        }
 </script>
 <script type="module">
     import {registNameAPI} from './Js/stateAPI.js'
@@ -105,8 +140,10 @@
         if (confirm('您是否要重新註冊遊戲角色?')) {
             // yourformelement.submit();
             localStorage.setItem("cookieName", '');
+            localStorage.setItem("cookieUuid", '');
 
-            location.href = './regist.html'
+            // location.href = './regist.html'
+            location.reload()
 
         } else {
             return false;
@@ -117,12 +154,64 @@
 
 
     // let value = $('#content3').val();
-    console.log('value 54',cookieName);
+    console.log('other scope cookieName : ',cookieName);
     $(".nameClass").text(`ID : ${cookieName}`);
     // $(input).attr('disable', true)
     // $("#content3").prop('disabled', true);
-    registNameAPI(cookieName)
+    if (cookieName != null && cookieName.length>0 && (cookieUuid == null || cookieUuid == '')) registNameAPI(cookieName)
+    else console.log('pass null or exists uuid create User!')
 
+
+
+    $('#registButton').click(()=>{
+            // iosCheck()
+            let value = $('#content3').val();
+            localStorage.setItem("cookieName", value);
+            localStorage.setItem("refreshCount",0);
+
+            var cookieName = localStorage.getItem("cookieName");
+            console.log(cookieName,cookieName.length)
+
+            if(cookieName.length<1){
+                alert('請輸入角色名稱!')
+                // location.href = ''
+            }else{
+                
+                // location.href = '/'
+                // location.reload()
+                location.href=location.href;
+            }
+        }
+    )
+
+    function iosCheck(){
+        if (typeof DeviceMotionEvent.requestPermission === 'function') {
+            DeviceMotionEvent.requestPermission().then(permissionState => {
+                if (permissionState === 'granted') {
+                    // shakeInit() //搖一搖
+                    console.log('搖晃權限已開通!')
+                } else if(permissionState === 'denied'){// 開啟的連結不是https開頭
+                    alert("當前IOS系統拒絕訪問動作與方向。請退出瀏覽器，重新進入活動頁面獲取許可權。")
+                }
+            }).catch((error) => {
+                alert("請求裝置方向或動作訪問需要使用者手勢來提示")
+            })
+        } else {
+            // 處理常規的非iOS 13+裝置
+            // alert("處理常規的非iOS 13+裝置")
+            alert('即將進入遊戲畫面 ! ');
+        }
+    }
+
+    if(detectBrowser.isIOs()){
+        $(".iosClass").text(`ios : yes `);
+
+    }
+
+    $('#permisionButton').click(()=>{
+        iosCheck()
+        $(".main1-permision").fadeOut(200);
+    })
     
 </script>
 

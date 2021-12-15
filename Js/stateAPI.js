@@ -34,7 +34,7 @@ function stateOutput(){
     setTimeout(()=>{
         console.log('clear !!')
         clearInterval(temp)
-    },600000)
+    },1800000)
 })()
 
 
@@ -55,6 +55,7 @@ async function registNameAPI(name){
     console.log( response.data.result.uuid);
     
     $(".uuidClass").text(`uuid : ${response.data.result.uuid}`)
+    localStorage.setItem("cookieUuid",response.data.result.uuid);
 
     // // update api Turn State for game rules
     // apiTurnState =  response.data.result.turn;

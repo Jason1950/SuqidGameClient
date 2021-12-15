@@ -7,6 +7,15 @@
     color: #fff;
 }
 
+.iosClass{
+    position: absolute;
+    left: 5%;
+    top: 10%;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #fff;
+}
+
 .countClass{
     position: absolute;
     right: 5%;
@@ -106,6 +115,22 @@
     background: #5f36f4;
 }
 
+#permisionButton{
+    
+    font-size: 35px;
+    font-Weight: 500;
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    width: 50%;
+    height: 60px;
+    border-radius: 5px;
+    /* border: none; */
+    color: #fff;
+    background: #7150ea;
+    transform: translate(-50%, -50%);
+}
+
 .main5-win{
     position: absolute;
     font-size: 3em;
@@ -156,6 +181,19 @@
     border: none;
     color: #fff;
     background: #48c1fa;
+}
+
+.main1-permision{
+    position: absolute;
+    font-size: 3em;
+    font-weight: 900;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5));
+    background-size:100% 100%;
+    z-index: 1;
 }
 
 .main2-regist{
