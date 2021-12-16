@@ -22,7 +22,8 @@
     left: 50%;
     top: 30%;
     transform: translate(-50%, -50%);
-    width: 17%;
+    width: 75px;
+    height: 75px;
     background: #f1c583;
     border-radius: 100%;
     padding: 17px;
@@ -33,10 +34,8 @@
 }
 
 #fade4-shake{
+    width: 75px;
 
-
-
-    width: 100%;
     animation: Jun_ring 2s infinite ease;
     /* animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both; */
 }

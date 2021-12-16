@@ -57,14 +57,14 @@
 
 
         // ground
-        const standCube = new THREE.Mesh(
-            new THREE.BoxGeometry(120, 50, 50), //object that contains all the points and faces of the cube
-            new THREE.MeshPhongMaterial( { color: 0xC63300, depthWrite: true } )
-        )
-        standCube.receiveShadow = true;
-        standCube.position.z = -1550;
-        standCube.name = 'standCube';
-        scene.add(standCube);
+        // const standCube = new THREE.Mesh(
+        //     new THREE.BoxGeometry(120, 50, 50), //object that contains all the points and faces of the cube
+        //     new THREE.MeshPhongMaterial( { color: 0xC63300, depthWrite: true } )
+        // )
+        // standCube.receiveShadow = true;
+        // standCube.position.z = -1550;
+        // standCube.name = 'standCube';
+        // scene.add(standCube);
 
         const grid = new THREE.GridHelper( 20, 20, 0x000000, 0x000000 );
         grid.material.opacity = 0.2;
@@ -157,7 +157,7 @@
             console.log('3d setFloor3 loading !')
             object.traverse( function ( child ) {
                 if ( child.isMesh ) {
-                    child.castShadow = false;
+                    child.castShadow = true;
                     child.receiveShadow = true;
                     // child.material = man_mtl;
                 }
@@ -180,7 +180,7 @@
 
         const ballSpere = new THREE.SphereGeometry( 15, 32, 16 );
 
-        const sphere = new THREE.Mesh( ballSpere, new THREE.MeshBasicMaterial( { 
+        const sphere = new THREE.Mesh( ballSpere, new THREE.MeshPhongMaterial( { 
             // color: 0xffff00 
             map: new THREE.TextureLoader().load('./pics/music.jpg'),
             // map: new THREE.TextureLoader().load(AWSPath+'/3dfile/playerA_1_new_boy_BaseColor.png'),
@@ -190,10 +190,12 @@
             ) );
         sphere.receiveShadow = true;
         sphere.castShadow = true;
+        sphere.material.needsUpdate = true;
+
 
         sphere.name = 'setFloor';
         sphere.scale.multiplyScalar(15.61); 
-        sphere.position.y -= 200;
+        sphere.position.y -= 160;
         sphere.position.z -= 200;
         scene.add( sphere );
 

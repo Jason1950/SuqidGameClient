@@ -8,6 +8,7 @@ window.addEventListener('shake', shakeEventDidOccur, false);
 
 //shake event callback
 function shakeEventDidOccur () {
+    $(".main1-permision").fadeOut(200);
 
     // get api turn state from stateAPI.js with function
     let apiTurnState = stateOutput()
@@ -25,7 +26,7 @@ function shakeEventDidOccur () {
     
     // update count UI
     if(count<300) count += 1;
-    $(".countClass").text(`步數 : ${count} / 300 `);
+    $(".countClass").text(`進度 : ${parseInt(count / 3)}% `);
 
 }
 
@@ -33,7 +34,7 @@ function reCount(){
     count = 0;
     $('.main4-out').delay(100).fadeOut(200);
     $('.main3').delay(100).fadeIn(200);
-    $(".countClass").text(`步數 : ${count} / 300 `);
+    $(".countClass").text(`進度 : ${parseInt(count / 3)}% `);
 
 }
 
