@@ -19,10 +19,10 @@
 .countClass{
     position: absolute;
     right: 5%;
-    top: 13%;
-    font-size: 1.1em;
+    top: 12%;
+    font-size: 1.4em;
     font-weight: 600;  
-    color: #fff;
+    color: #e9b37a;
 
 }
 
@@ -73,9 +73,9 @@
 
 .main4-out{
     position: absolute;
-    font-size: 3em;
+    font-size: 4em;
     font-weight: 900;
-    background: rgb(204, 204, 203);
+    /* background: rgb(204, 204, 203); */
     width: 100%;
     height: 100%;
     top: 0;
@@ -83,6 +83,8 @@
     justify-content: center;
     align-items: center;
     display: flex;
+    background-image: url(../pics/out-bg2.png);
+    color: #FFF;
 }
 
 #main3-canvas{
@@ -156,7 +158,7 @@
 }
 
 #refightButton{
-    bottom: 10%;
+    bottom: 20%;
     font-size: 21px;
     font-Weight: 600;
     position: absolute;
@@ -243,6 +245,16 @@
     top: 13%;
     transform: translate(-50%,-50%);
     width: 80%;
+}
+
+#modelColor{
+    justify-content: center;
+    display: flex;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 30%;
 }
 
 #model-bg01{
@@ -335,4 +347,40 @@
     left: 14%;
     top: 5%;
     display: grid;
+}
+
+.main7-end-out{
+    position: absolute;
+    font-size: 4em;
+    font-weight: 900;
+    /* background: rgb(204, 204, 203); */
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    background-image: url(../pics/out-bg2.png);
+    color: #FFF;
+}
+
+#end-out{
+    justify-content: center;
+    display: flex;
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    transform: translate(-50%,-50%);
+    width: 45%;
+}
+
+#out-title{
+    justify-content: center;
+    display: flex;
+    position: absolute;
+    left: 50%;
+    top: 18%;
+    transform: translate(-50%,-50%);
+    width: 80%;
 }

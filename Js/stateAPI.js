@@ -3,7 +3,7 @@ import {reCount, countReturn} from './countFunction.js'
 
 let apiTurnState = '';
 let cookieUuid = ''
-let apiStart = false;
+let apiEndState = false;
 let lastState = false;
 let count = 0;
 
@@ -22,10 +22,11 @@ async function stateAPI(){
     )
     // debug messege
     console.log( response.data.result);
-    $(".stateClass").text(`State : ${response.data.result.start} , ${response.data.result.turn}`)
+    $(".stateClass").text(`State : ${response.data.result.start} , ${response.data.result.turn} , ${response.data.result.end}`)
 
     // update api Turn State for game rules
     apiTurnState =  response.data.result.turn;
+    apiEndState = response.data.result.end;
     if (lastState != response.data.result.start && response.data.result.start==true) {
         // apiStart = true;
         showStart()
@@ -52,7 +53,7 @@ function showStart(){
             $(".main6-start").text(`3`)
             reCount()
         },900)
-        $(".main6-start").text(`開始`)
+        $(".main6-start").text(`START`)
         $(".main6-start").fadeOut(1010);
 
         
@@ -94,7 +95,7 @@ async function registNameAPI(name){
     // debug messege
     console.log( response.data.result.uuid);
     
-    $(".uuidClass").text(`uuid : ${response.data.result.uuid}`)
+    $(".uuidClass").text(`uuid : ${response.data.result.uuid}`);
     localStorage.setItem("cookieUuid",response.data.result.uuid);
 
     // // update api Turn State for game rules
@@ -123,6 +124,9 @@ async function updateUserData(uuid,count0){
     // apiTurnState =  response.data.result.turn;
 }
 
+function endCheckFunction(){
+    return apiEndState;
+}
 
 
-export {stateOutput, registNameAPI};
+export {stateOutput, registNameAPI, endCheckFunction};

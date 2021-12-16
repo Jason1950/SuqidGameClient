@@ -21,11 +21,17 @@
             var cookieColor = localStorage.getItem("cookieColor");
             console.log('try cookie name :',cookieName, ' , and lenth : ', cookieName.length, ' , uuid: ',cookieUuid, ' , color: ',cookieColor)
             
+            if (cookieColor == null) {
+                cookieColor = '0';
+                localStorage.setItem("cookieColor",'0');
+                console.log('declare cookieColor : ',localStorage.getItem("cookieColor"))
+            }
+
         } catch (exception) {
 
             console.log(`${exception.name}: ${exception.message}`)
         }
-     
+    
     </script>
 
     <script>
@@ -76,12 +82,10 @@
     <div class="main2-regist">
         <img id="title01" src="./pics/title.png">
         <img id="model-bg01" src="./pics/model-bg3.png">
-        <img id="right-button01" src="./pics/right-button.png">
-        <img id="left-button01" src="./pics/left-button.png">
-
-        <!-- <div id="content1">1 2 3 玫瑰人</div> -->
-        <!-- <div id="content2">遊戲名稱</div> -->
-        <input id="content3" placeholder="輸入名字"  required autofocus>
+        <img id="right-button01" src="./pics/right-button.png" onclick="rightSelect()">
+        <img id="left-button01" src="./pics/left-button.png" onclick="leftSelect()">
+        <img id="modelColor" src="./pics/Color0.PNG">
+        <input id="content3" placeholder="輸入名字"  required autofocus  maxlength="10">
         <button id="registButton">註 冊</button>  
     </div>
 
@@ -110,7 +114,9 @@
     </div>
 
     <div class="main4-out">
-        失敗 !
+        <img id="out-title" src="./pics/title.png">
+
+        挑戰失敗 !
         <button id="refightButton">重新挑戰</button>
     </div>
 
@@ -121,6 +127,12 @@
    <div class="main6-start"> 3 </div>
     <!-- <button id="testCountButton"  >Run</button> -->
 
+    <div class="main7-end-out">
+        <img id="out-title" src="./pics/title.png">
+        <img id="end-out" src="./pics/end-out.png">
+    </div>
+
+
 </body>
 <script>
         $(".uuidClass").text(`uuid : ${cookieUuid}`)
@@ -128,17 +140,14 @@
         // *****************************
         //   暫時關閉  請務必開啟!!!!!!!
         // *****************************
-        // $(".main1-permision").hide()
+        $(".main1-permision").hide()
         $(".main6-start").hide();
+        $(".main4-out").hide();
+        $(".main7-end-out").hide();
+        $(".main5-win").hide();
         // *****************************
 
 
-
-
-        
-
-        $(".main4-out").hide();
-        $(".main5-win").hide();
         if(cookieName==null){
             $(".main3").hide()
             $(".main1-permision").hide()
@@ -151,6 +160,37 @@
             refeshCount += 1;
             localStorage.setItem("refreshCount",refeshCount);
             $(".main2-regist").hide()
+        }
+
+        function rightSelect(){
+            cookieColor = localStorage.getItem("cookieColor");
+            let colornumber = parseInt(cookieColor)
+            if (colornumber+1 <8) {
+                colornumber+=1
+            }
+            else {
+                colornumber = 0
+            }
+            localStorage.setItem("cookieColor",colornumber.toString());
+            let path = "./pics/Color" + colornumber + ".png"
+            $('#modelColor').attr("src",path);
+            console.log('right ', colornumber);
+        }
+
+        function leftSelect(){
+            cookieColor = localStorage.getItem("cookieColor");
+            let colornumber = parseInt(cookieColor)
+            if (colornumber-1 > -1) {
+                colornumber -=1
+            }
+            else {
+                colornumber = 7
+            }
+            localStorage.setItem("cookieColor",colornumber.toString());
+            let path = "./pics/Color" + colornumber + ".png"
+            $('#modelColor').attr("src",path);
+            // src("./pics/right-button.png");
+            console.log('left', localStorage.getItem("cookieColor"));
         }
 </script>
 <script type="module">
@@ -239,6 +279,7 @@
         $(".main1-permision").fadeOut(200);
     })
     
+
 </script>
 
 </html>

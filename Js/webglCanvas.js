@@ -1,7 +1,7 @@
 
     import * as THREE from 'https://d1xeexhxuygkal.cloudfront.net/S3webgl/build/three.module.js';
     import { FBXLoader } from 'https://d1xeexhxuygkal.cloudfront.net/S3webgl/export/jsm/loaders/FBXLoader.js';
-    import {stateOutput} from './stateAPI.js'
+    import {stateOutput, endCheckFunction} from './stateAPI.js'
 
     // https://d1xeexhxuygkal.cloudfront.net/S3webgl/export/jsm
     // https://d1xeexhxuygkal.cloudfront.net/S3webgl/build
@@ -25,6 +25,7 @@
     let apiTurnState = false;
     let lastApiTurnState = false;
     let actionState = false;
+    let endCheck = 0
 
     init();
     animate();
@@ -144,7 +145,7 @@
             object.scale.multiplyScalar(0.1); 
             object.rotation.y = 3.14
             object.rotation.x = 0.14
-            object.position.y = 150
+            object.position.y = 140
             object.name = 'roseHead';
 
             scene.add( object );
@@ -235,17 +236,22 @@
         renderer.render( scene, camera );
         headRotationFunction()
         setFloorCome()
+        boyReturnFunction()
+
     }
 
     function setFloorCome(){
         
         let floorObject = scene.getObjectByName( "setFloor" );
-        floorObject.rotation.x += 0.031;
+        let state = endCheckFunction()
+        // console.log('end state : ', state)
+        if(!state) floorObject.rotation.x += 0.031;
     }
 
     function headRotationFunction(){
         apiTurnState = stateOutput();
         if(lastApiTurnState != apiTurnState){
+            
             let cube000 = scene.getObjectByName( "roseHead" );
             TweenMax.to(cube000.rotation, 0.3, 
                 {
@@ -254,6 +260,20 @@
         }
         lastApiTurnState = apiTurnState;
     }
+
+    function boyReturnFunction(){   
+        let cube000 = scene.getObjectByName( "groupBoy" );
+        
+        let state = endCheckFunction()
+        
+        if(state && endCheck==0){
+            endCheck += 1
+            TweenMax.to(cube000.rotation, 0.3, 
+            {
+                y: cube000.rotation.y+Math.PI, ease: Linear.easeNone
+            });}
+    }
+    
 
 
 
