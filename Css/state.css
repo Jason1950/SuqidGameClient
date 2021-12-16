@@ -1,7 +1,7 @@
 .stateClass{
     position: absolute;
     left: 5%;
-    top: 6%;
+    bottom: 5%;
     font-size: 1.1em;
     font-weight: 600;
     color: #fff;
@@ -10,7 +10,7 @@
 .iosClass{
     position: absolute;
     left: 5%;
-    top: 10%;
+    bottom: 10%;
     font-size: 1.1em;
     font-weight: 600;
     color: #fff;
@@ -19,7 +19,7 @@
 .countClass{
     position: absolute;
     right: 5%;
-    top: 2%;
+    top: 13%;
     font-size: 1.1em;
     font-weight: 600;  
     color: #fff;
@@ -27,28 +27,36 @@
 }
 
 .nameClass{
-    position: absolute;
-    left: 5%;
-    top: 2%;
-    font-size: 1.1em;
-    font-weight: 600;
-    color: #fff;
+    /* position: absolute;
+    left: 14%;
+    top: 5%; */
+    font-size: 1em;
+    font-weight: 700;
+    color: #000000;
+    background: rgba(255,128,1,0.9);
+    padding: 3px 6px;
+    border-radius: 2px;
 }
 
 .re-regist{
     bottom: 10%;
-    font-size: 10px;
-    font-Weight: 700;
-    position: absolute;
+    font-size: 14px;
+    /* font-Weight: 600; */
+    /* position: absolute; */
     /* z-index: 1; */
-    top: 7%;
-    right: 9%;
-    width: 60px;
+    /* top: 11%; */
+    /* left: 2%; */
+    position: relative;
+    left: 50%;
+    width: 50px;
     height: 25px;
     border-radius: 5px;
     border: none;
-    color: #fff;
-    background: rgba(226, 108, 118, 0.4);
+    color: #FFF;
+    background: rgb(200 200 200 / 51%);
+    transform: translate(-50%, 10px);
+    /* background-image: url(../pics/logout4.png); */
+    /* background-size: 100%;*/
 }
 
 .uuidClass{
@@ -116,18 +124,17 @@
 }
 
 #permisionButton{
-    
     font-size: 35px;
-    font-Weight: 500;
+    font-Weight: 900;
     position: absolute;
     top: 75%;
     left: 50%;
-    width: 50%;
+    width: 40%;
     height: 60px;
     border-radius: 5px;
-    /* border: none; */
-    color: #fff;
-    background: #7150ea;
+    border: none;
+    color: #000000;
+    background: #FF8001;
     transform: translate(-50%, -50%);
 }
 
@@ -162,8 +169,8 @@
 }
 
 #registButton{
-    bottom: 10%;
-    font-size: 21px;
+    bottom: 8%;
+    font-size: 30px;
     font-Weight: 600;
     position: absolute;
     left: 50%;
@@ -173,14 +180,15 @@
     display: flex;
     /* height: 2em; */
     padding: 5px;
-    width: 65%;
+    width: 120px;
     /* text-align: center; */
     display: flex;
     justify-content: center;
     border-radius: 5px;
     border: none;
-    color: #fff;
-    background: #48c1fa;
+    color: #000000;
+    background: #FF8001;
+    /* background-image:url('../pics/startButton.png'); */
 }
 
 .main1-permision{
@@ -208,8 +216,10 @@
     /* justify-content: center;
     align-items: center; */
     /* display: flex; */
-    background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),url('../pics/bg2.jpg');
-    background-size:100% 100%;
+    /* background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),url('../pics/bg-after.png'); */
+    background: url('../pics/bg-after2.jpg');
+    
+    background-size:100%;
 }
 
 .main2-regist #content1{
@@ -222,6 +232,45 @@
     width: 70%;
 }
 
+#title01{
+    justify-content: center;
+    display: flex;
+    position: absolute;
+    left: 50%;
+    top: 13%;
+    transform: translate(-50%,-50%);
+    width: 80%;
+}
+
+#model-bg01{
+    justify-content: center;
+    display: flex;
+    position: absolute;
+    left: 50%;
+    top: 47%;
+    transform: translate(-52%,-50%);
+    width: 85%;
+}
+
+#right-button01{
+    justify-content: center;
+    display: flex;
+    position: absolute;
+    right: 0.5%;
+    top: 47%;
+    transform: translate(-52%,-50%);
+    width: 12%;
+}
+
+#left-button01{
+    justify-content: center;
+    display: flex;
+    position: absolute;
+    left: 14%;
+    top: 47.5%;
+    transform: translate(-52%,-50%);
+    width: 13%;
+}
 
 .main2-regist #content2{
     justify-content: center;
@@ -240,7 +289,7 @@
     display: flex;
     position: absolute;
     left: 50%;
-    top: 33%;
+    top: 76%;
     /* height: 2em; */
     transform: translate(-50%,-50%);
     width: 50%;
@@ -255,4 +304,32 @@
     font-weight: 900;
     color: #df78bb;
     transform: translate(-50%, -50%);
+}
+
+
+#title03{
+    justify-content: center;
+    display: flex;
+    position: absolute;
+    right: -18%;
+    top: 7%;
+    transform: translate(-50%,-50%);
+    width: 43%;
+}
+
+#headicon01{
+    justify-content: center;
+    display: flex;
+    position: absolute;
+    left: 7%;
+    top: 7%;
+    transform: translate(-50%,-50%);
+    width: 10%;
+}
+
+.nameBox{
+    position: absolute;
+    left: 14%;
+    top: 5%;
+    display: grid;
 }

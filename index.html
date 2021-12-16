@@ -18,7 +18,8 @@
         try {            
             var cookieName = localStorage.getItem("cookieName");
             var cookieUuid = localStorage.getItem("cookieUuid");
-            console.log('try cookie name :',cookieName, ' , and lenth : ', cookieName.length, ' , uuid: ',cookieUuid)
+            var cookieColor = localStorage.getItem("cookieColor");
+            console.log('try cookie name :',cookieName, ' , and lenth : ', cookieName.length, ' , uuid: ',cookieUuid, ' , color: ',cookieColor)
             
         } catch (exception) {
 
@@ -70,12 +71,17 @@
         <div id="fade4-block">
             <img id="fade4-shake" src="https://cdn-icons-png.flaticon.com/512/1527/1527496.png">
         </div>
-        <button id="permisionButton">Start</button>
+        <button id="permisionButton">開 始</button>
     </div>
     <div class="main2-regist">
-        <div id="content1">1 2 3 玫瑰人</div>
-        <div id="content2">遊戲名稱</div>
-        <input id="content3" required autofocus>
+        <img id="title01" src="./pics/title.png">
+        <img id="model-bg01" src="./pics/model-bg3.png">
+        <img id="right-button01" src="./pics/right-button.png">
+        <img id="left-button01" src="./pics/left-button.png">
+
+        <!-- <div id="content1">1 2 3 玫瑰人</div> -->
+        <!-- <div id="content2">遊戲名稱</div> -->
+        <input id="content3" placeholder="輸入名字"  required autofocus>
         <button id="registButton">註 冊</button>  
     </div>
 
@@ -87,12 +93,19 @@
     </div> -->
 
     <div class="main3">
+        <img id="title03" src="./pics/title.png">
+        <img id="headicon01" src="./pics/headicon.png">
+
         <div class="stateClass">non</div>
         <div class="iosClass">ios : no</div>
-        <div class="nameClass">Unregister</div>
+        <div class="nameBox">
+            <div class="nameClass">Unregister</div>
+            <button class="re-regist">登出</button>
+        </div>
+
+
         <div class="countClass">步數 : 0 / 300</div>
         <div class="uuidClass">uuid: </div>
-        <button class="re-regist">Log-out</button>
         <canvas id="main3-canvas"></canvas>
     </div>
 
@@ -168,7 +181,7 @@
 
     // let value = $('#content3').val();
     console.log('other scope cookieName : ',cookieName);
-    $(".nameClass").text(`ID : ${cookieName}`);
+    $(".nameClass").text(`${cookieName}`);
     // $(input).attr('disable', true)
     // $("#content3").prop('disabled', true);
     if (cookieName != null && cookieName.length>0 && (cookieUuid == null || cookieUuid == '')) registNameAPI(cookieName)

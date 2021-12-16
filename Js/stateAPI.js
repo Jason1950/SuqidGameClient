@@ -103,7 +103,7 @@ async function registNameAPI(name){
 
 function countUpdateData(){
     if((cookieUuid.length)>1 && count%10 ==0) updateUserData(cookieUuid, count)
-    console.log(cookieUuid, count)
+    // console.log(cookieUuid, count)
 }
 
 async function updateUserData(uuid,count0){

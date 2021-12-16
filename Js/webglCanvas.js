@@ -36,7 +36,8 @@
         scene = new THREE.Scene();
 
         // scene.background = new THREE.TextureLoader().load(AWSPath+'/3dfile/background.jpg');
-        scene.background = new THREE.TextureLoader().load('../pics/bg5.jpg');
+        scene.background = new THREE.TextureLoader().load('../3dfile/background2.jpg');
+        // scene.background = new THREE.TextureLoader().load('../pics/bg5.jpg');
         // scene.background = new THREE.Color( 0xa0a0a0 );
         // scene.fog = new THREE.Fog( 0xa0a0a0, 200, 2000 );
 
