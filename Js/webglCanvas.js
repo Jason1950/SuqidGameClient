@@ -40,7 +40,7 @@
         scene.background = new THREE.TextureLoader().load('../3dfile/background2.jpg');
         // scene.background = new THREE.TextureLoader().load('../pics/bg5.jpg');
         // scene.background = new THREE.Color( 0xa0a0a0 );
-        // scene.fog = new THREE.Fog( 0xa0a0a0, 200, 2000 );
+        scene.fog = new THREE.Fog( 0xa0a0a0, 200, 2000 );
 
         const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
         hemiLight.position.set( 0, 200, 0 );
@@ -130,22 +130,30 @@
 
 
 
-        loader.load('../3dfile/wolf-head.fbx', function ( object ) {
-        // loader.load(AWSPath+'/3dfile/wolf-head.fbx', function ( object ) {
+        // loader.load('../3dfile/wolf-head.fbx', function ( object ) {
+        loader.load(AWSPath+'/3dfile/rosehead.fbx', function ( object ) {
+        // loader.load(AWSPath+'/3dfile/rosehead.fbx', function ( object ) {
             console.log('3d head loading !')
-
+            const man_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/rose_rose_BaseColor.png');
+            man_txt.flipY = true; // we flip the texture so that its the right way up
+            const man_mtl = new THREE.MeshPhongMaterial({
+                map: man_txt,
+                color: 0xffffff,
+                skinning: true
+            });
             object.traverse( function ( child ) {
                 if ( child.isMesh ) {
                     child.castShadow = false;
                     child.receiveShadow = false;
-                    child.material[0].color.setHex(0xBE77FF);
+                    child.material = man_mtl;
+                    // child.material[0].color.setHex(0xBE77FF);
                 }
             } );
 
-            object.scale.multiplyScalar(0.1); 
+            object.scale.multiplyScalar(16.1); 
             object.rotation.y = 3.14
             object.rotation.x = 0.14
-            object.position.y = 140
+            object.position.y = -60
             object.name = 'roseHead';
 
             scene.add( object );

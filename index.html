@@ -35,7 +35,7 @@
     </script>
 
     <script>
-
+        
         var detectBrowser = {
             isIOs: () => /iPad|iPhone|iPod/.test(navigator.userAgent),
             isIpad: () => {
@@ -80,11 +80,14 @@
         <button id="permisionButton">搖起來!</button>
     </div>
     <div class="main2-regist">
-        <img id="title01" src="./pics/title.png">
-        <img id="model-bg01" src="./pics/model-bg3.png">
-        <img id="right-button01" src="./pics/right-button.png" onclick="rightSelect()">
-        <img id="left-button01" src="./pics/left-button.png" onclick="leftSelect()">
-        <img id="modelColor" src="./pics/Color0.PNG">
+        <img id="title01" src="https://d1xeexhxuygkal.cloudfront.net/pics/title.png">
+        <img id="model-bg01" src="https://d1xeexhxuygkal.cloudfront.net/pics/model-bg3.png">
+        <img id="right-button01" src="https://d1xeexhxuygkal.cloudfront.net/pics/right-button.png" onclick="rightSelect()">
+        <img id="left-button01" src="https://d1xeexhxuygkal.cloudfront.net/pics/left-button.png" onclick="leftSelect()">
+        <!-- leftSelect()
+        rightSelect() -->
+        <img id="modelColor" src= "https://d1xeexhxuygkal.cloudfront.net/pics/Color0.png">
+        <!-- <img id="modelColor" src="./pics/Color0.png"> -->
         <input id="content3" placeholder="輸入名字"  required autofocus  maxlength="10">
         <button id="registButton">註 冊</button>  
     </div>
@@ -97,11 +100,11 @@
     </div> -->
 
     <div class="main3">
-        <img id="title03" src="./pics/title.png">
+        <img id="title03" src="https://d1xeexhxuygkal.cloudfront.net/pics/title.png">
         <img id="headicon01" src="./pics/headicon.png">
 
-        <div class="stateClass">non</div>
-        <div class="iosClass">ios : no</div>
+        <div class="stateClass hideClass" >non</div>
+        <div class="iosClass hideClass">ios : no</div>
         <div class="nameBox">
             <div class="nameClass">Unregister</div>
             <button class="re-regist">登出</button>
@@ -114,21 +117,21 @@
     </div>
 
     <div class="main4-out">
-        <img id="out-title" src="./pics/title.png">
+        <img id="out-title" src="https://d1xeexhxuygkal.cloudfront.net/pics/title.png">
 
         挑戰失敗 !
         <button id="refightButton">重新挑戰</button>
     </div>
 
     <div class="main5-win">
-        W I N ! 
+        <img id="win01" src="./pics/win.png">
    </div>
 
    <div class="main6-start"> 3 </div>
     <!-- <button id="testCountButton"  >Run</button> -->
 
     <div class="main7-end-out">
-        <img id="out-title" src="./pics/title.png">
+        <img id="out-title" src="https://d1xeexhxuygkal.cloudfront.net/pics/title.png">
         <img id="end-out" src="./pics/end-out.png">
     </div>
 
@@ -140,7 +143,7 @@
         // *****************************
         //   暫時關閉  請務必開啟!!!!!!!
         // *****************************
-        $(".main1-permision").hide()
+        // $(".main1-permision").hide()
         $(".main6-start").hide();
         $(".main4-out").hide();
         $(".main7-end-out").hide();
@@ -172,7 +175,7 @@
                 colornumber = 0
             }
             localStorage.setItem("cookieColor",colornumber.toString());
-            let path = "./pics/Color" + colornumber + ".png"
+            let path = "https://d1xeexhxuygkal.cloudfront.net/pics/Color" + colornumber + ".png"
             $('#modelColor').attr("src",path);
             console.log('right ', colornumber);
         }
@@ -187,7 +190,7 @@
                 colornumber = 7
             }
             localStorage.setItem("cookieColor",colornumber.toString());
-            let path = "./pics/Color" + colornumber + ".png"
+            let path = "https://d1xeexhxuygkal.cloudfront.net/pics/Color" + colornumber + ".png"
             $('#modelColor').attr("src",path);
             // src("./pics/right-button.png");
             console.log('left', localStorage.getItem("cookieColor"));
