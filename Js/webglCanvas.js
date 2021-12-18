@@ -18,8 +18,12 @@
     let mixerFloor;
     let actionFloor;
 
+    let animationArray =[];
+
     const resizePara = 1; //4/5;
     const floorSize = 12000;
+    const loader = new FBXLoader();
+
 
 
     let apiTurnState = false;
@@ -74,7 +78,7 @@
 
 
 
-        const loader = new FBXLoader();
+        // const loader = new FBXLoader();
         const groupBoy = new THREE.Group();
         const groupSetFloor = new THREE.Group();
 
@@ -91,12 +95,16 @@
             // const man_txt = new THREE.TextureLoader().load('https://d1xeexhxuygkal.cloudfront.net/apple.jpg');
             const man_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/playerA_1_new_boy_BaseColor.png');
             // const man_txt = new THREE.TextureLoader().load('../3dfile/playerA_1_new_boy_BaseColor.png');
-            // loader.load( '../3dfile/playerA_1_run.fbx', function ( object ) {
-            loader.load(AWSPath+'/3dfile/run.fbx', function ( object ) {
+            loader.load( '../3dfile/playerA_null.fbx', function ( object ) {
+
+            // loader.load(AWSPath+'/3dfile/run.fbx', function ( object ) {
                 // loader.load( 'https://d1xeexhxuygkal.cloudfront.net/run.fbx', function ( object ) {
             // loader.load( '../3dfile/run.fbx', function ( object ) {
             // loader.load( '../3dfile/boy2.fbx', function ( object ) {
 
+
+                loadAnimation();
+                
                 man_txt.flipY = true; // we flip the texture so that its the right way up
                 const man_mtl = new THREE.MeshPhongMaterial({
                     map: man_txt,
@@ -105,9 +113,11 @@
                 });
 
                 mixer = new THREE.AnimationMixer( object );
-                action = mixer.clipAction( object.animations[0] );
-                console.log('action : ', action);
-                action.play();
+                // action = mixer.clipAction( animationArray.find(item=>item.name=='fail') );
+
+                // action = mixer.clipAction( object.animations[0] );
+                // console.log('action : ', action);
+                // action.play();
                 object.traverse( function ( child ) {
                     if ( child.isMesh ) {
                         child.castShadow = true;
@@ -175,13 +185,7 @@
             object.position.y = 20
             object.position.z = -190
             object.rotation.set(-190,0,0)
-            groupSetFloor.add( object );
-
-            // groupSetFloor.position.y =-190
-            // object.position.y = 20
-            // object.position.z = -190
-            // scene.add( object );
-            
+            groupSetFloor.add( object );            
         } );
         // groupSetFloor.name = 'setFloor';
         // scene.add( groupSetFloor );
@@ -252,8 +256,10 @@
         
         let floorObject = scene.getObjectByName( "setFloor" );
         let state = endCheckFunction()
+        let apiTurnState = stateOutput();
+
         // console.log('end state : ', state)
-        if(!state) floorObject.rotation.x += 0.031;
+        if(!state && !apiTurnState) floorObject.rotation.x += 0.031;
     }
 
     function headRotationFunction(){
@@ -282,6 +288,36 @@
             });}
     }
     
+
+    function loadAnimation(){
+        loader.load( '../3dfile/action_fail.fbx', function ( object ) {
+            object.animations[ 0 ].name ="fail";
+            animationArray.push( object.animations[ 0 ]);  
+            
+            
+        } );
+        loader.load( '../3dfile/action_idle.fbx', function ( object ) {
+            object.animations[ 0 ].name ="idle";
+            animationArray.push( object.animations[ 0 ]);     
+
+        } );
+        loader.load( '../3dfile/action_run.fbx', function ( object ) {
+            object.animations[ 0 ].name ="run";
+            animationArray.push( object.animations[ 0 ]);    
+            initAction(object.animations[ 0 ])
+        } );
+        loader.load( '../3dfile/action_win.fbx', function ( object ) {
+            object.animations[ 0 ].name ="win";
+            animationArray.push( object.animations[ 0 ]);            
+        } );   
+    }
+
+    function initAction(animate){
+        action = mixer.clipAction( animate );
+        // action = mixer.clipAction( object.animations[0] );
+        console.log('action : ', action);
+        action.play();
+    }
 
 
 
