@@ -67,10 +67,10 @@ function showStart(){
 (function timeAPI(){
     const temp = setInterval(()=>{
         stateAPI();
-        cookieUuid = localStorage.getItem("cookieUuid");
+        let cookieUuid = localStorage.getItem("cookieUuid");
         count = countReturn()
         // if(cookieUuid) console.log('uuid:',cookieUuid)
-        countUpdateData()
+        countUpdateData(cookieUuid)
     },300)
     setTimeout(()=>{
         console.log('clear !!')
@@ -102,7 +102,7 @@ async function registNameAPI(name){
     // apiTurnState =  response.data.result.turn;
 }
 
-function countUpdateData(){
+function countUpdateData(cookieUuid){
     if((cookieUuid.length)>1 && count%10 ==0) updateUserData(cookieUuid, count)
     // console.log(cookieUuid, count)
 }

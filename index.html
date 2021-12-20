@@ -101,7 +101,7 @@
 
     <div class="main3">
         <img id="title03" src="https://d1xeexhxuygkal.cloudfront.net/pics/title.png">
-        <img id="headicon01" src="./pics/headicon.png">
+        <img id="headicon01" src="https://d1xeexhxuygkal.cloudfront.net/pics/headicon.png">
 
         <div class="stateClass hideClass" >non</div>
         <div class="iosClass hideClass">ios : no</div>
@@ -124,7 +124,7 @@
     </div>
 
     <div class="main5-win">
-        <img id="win01" src="./pics/win.png">
+        <img id="win01" src="https://d1xeexhxuygkal.cloudfront.net/pics/win.png">
    </div>
 
    <div class="main6-start"> 3 </div>
@@ -132,7 +132,7 @@
 
     <div class="main7-end-out">
         <img id="out-title" src="https://d1xeexhxuygkal.cloudfront.net/pics/title.png">
-        <img id="end-out" src="./pics/end-out.png">
+        <img id="end-out" src="https://d1xeexhxuygkal.cloudfront.net/pics/end-out.png">
     </div>
 
 
@@ -199,6 +199,8 @@
 <script type="module">
     import {registNameAPI} from './Js/stateAPI.js'
     import {reCount} from './Js/countFunction.js'
+    import {removeModelAndReload} from './Js/webglCanvas.js'
+
     
     $('#refightButton').click(()=>{
         reCount()
@@ -210,6 +212,7 @@
             // yourformelement.submit();
             localStorage.setItem("cookieName", '');
             localStorage.setItem("cookieUuid", '');
+            localStorage.setItem("cookieColor",'0');
 
             // location.href = './regist.html'
             location.reload()
@@ -217,6 +220,8 @@
         } else {
             return false;
         }
+
+        // removeModelAndReload()
     
 
     })

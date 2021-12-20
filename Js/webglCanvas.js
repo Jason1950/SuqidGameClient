@@ -31,6 +31,12 @@
     let actionState = false;
     let endCheck = 0
 
+
+    var cookieColor = localStorage.getItem("cookieColor");
+
+    console.log('this is webgl file and get color : ', cookieColor)
+    // cookieColor = 0
+
     init();
     animate();
 
@@ -83,27 +89,18 @@
         const groupSetFloor = new THREE.Group();
 
         async function boyLoad(){
+            if (cookieColor==null) cookieColor = 0
             console.log('async 3d boy model load function!')
-            // const animationsRokoko = await modelLoader('./3dfile/man_Idle.fbx');
-            // https://goodtrace-kouhu.appxervice.com/static/media/tilapia2.796f3975.jpg
-            // https://penueling.com/wp-content/uploads/2020/11/ReactNative.png
-            // https://d1xeexhxuygkal.cloudfront.net/apple.jpg
-            // https://d1xeexhxuygkal.cloudfront.net/run.fbx
-            
-            // const man_txt = new THREE.TextureLoader().load('../3dfile/boy2.png');
-            // const man_txt = new THREE.TextureLoader().load('https://goodtrace-kouhu.appxervice.com/static/media/tilapia2.796f3975.jpg');
-            // const man_txt = new THREE.TextureLoader().load('https://d1xeexhxuygkal.cloudfront.net/apple.jpg');
-            const man_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/playerA_1_new_boy_BaseColor.png');
-            // const man_txt = new THREE.TextureLoader().load('../3dfile/playerA_1_new_boy_BaseColor.png');
-            loader.load( '../3dfile/playerA_null.fbx', function ( object ) {
 
-            // loader.load(AWSPath+'/3dfile/run.fbx', function ( object ) {
-                // loader.load( 'https://d1xeexhxuygkal.cloudfront.net/run.fbx', function ( object ) {
-            // loader.load( '../3dfile/run.fbx', function ( object ) {
+            // const man_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/playerA_1_new_boy_BaseColor.png');
+            // const man_txt = new THREE.TextureLoader().load('../3dfile/playerA_1_new_boy_BaseColor.png');
+            // loader.load( '../3dfile/playerA_null.fbx', function ( object ) {
+            const man_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/player'+cookieColor+'.png');
+            loader.load( AWSPath+'/3dfile/player'+cookieColor+'.fbx', function ( object ) {
             // loader.load( '../3dfile/boy2.fbx', function ( object ) {
 
 
-                loadAnimation();
+                
                 
                 man_txt.flipY = true; // we flip the texture so that its the right way up
                 const man_mtl = new THREE.MeshPhongMaterial({
@@ -118,6 +115,11 @@
                 // action = mixer.clipAction( object.animations[0] );
                 // console.log('action : ', action);
                 // action.play();
+
+                loadAnimation().catch(error => {
+                    console.error(error);
+                });
+
                 object.traverse( function ( child ) {
                     if ( child.isMesh ) {
                         child.castShadow = true;
@@ -195,7 +197,7 @@
 
         const sphere = new THREE.Mesh( ballSpere, new THREE.MeshPhongMaterial( { 
             // color: 0xffff00 
-            map: new THREE.TextureLoader().load('./pics/music.jpg'),
+            map: new THREE.TextureLoader().load(AWSPath+'/3dfile/music.jpg'),
             // map: new THREE.TextureLoader().load(AWSPath+'/3dfile/playerA_1_new_boy_BaseColor.png'),
             shininess: 10,
         } 
@@ -289,26 +291,29 @@
     }
     
 
-    function loadAnimation(){
-        loader.load( '../3dfile/action_fail.fbx', function ( object ) {
+    async function loadAnimation(){
+        loader.load( AWSPath+'/3dfile/action_fail.fbx', function ( object ) {
             object.animations[ 0 ].name ="fail";
             animationArray.push( object.animations[ 0 ]);  
             
             
         } );
-        loader.load( '../3dfile/action_idle.fbx', function ( object ) {
+        loader.load( AWSPath+'/3dfile/action_idle.fbx', function ( object ) {
             object.animations[ 0 ].name ="idle";
             animationArray.push( object.animations[ 0 ]);     
 
         } );
-        loader.load( '../3dfile/action_run.fbx', function ( object ) {
+        loader.load( AWSPath+'/3dfile/action_run.fbx', function ( object ) {
             object.animations[ 0 ].name ="run";
             animationArray.push( object.animations[ 0 ]);    
             initAction(object.animations[ 0 ])
+
         } );
-        loader.load( '../3dfile/action_win.fbx', function ( object ) {
+        // loader.load( '../3dfile/winAnamationOnly.fbx', function ( object ) {
+        loader.load( AWSPath+'/3dfile/action_win.fbx', function ( object ) {
             object.animations[ 0 ].name ="win";
-            animationArray.push( object.animations[ 0 ]);            
+            animationArray.push( object.animations[ 0 ]);        
+
         } );   
     }
 
@@ -317,6 +322,19 @@
         // action = mixer.clipAction( object.animations[0] );
         console.log('action : ', action);
         action.play();
+    }
+
+
+    function removeModelAndReload(object) {
+        var selectedObject = scene.getObjectByName('groupBoy');
+        scene.remove( selectedObject );
+
+        const groupBoy = new THREE.Group();
+        boyLoad().catch(error => {
+            console.error(error);
+        });
+
+        // animate();
     }
 
 
@@ -436,3 +454,6 @@
     //         map: THREE.ImageUtils.loadTexture('../3dfile/devil-head.jpg')
     //     })
     // ];
+
+
+    export {removeModelAndReload};
