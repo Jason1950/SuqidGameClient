@@ -199,11 +199,13 @@
 <script type="module">
     import {registNameAPI} from './Js/stateAPI.js'
     import {reCount} from './Js/countFunction.js'
-    import {removeModelAndReload} from './Js/webglCanvas.js'
+    import {removeModelAndReload, animationToRun, animationAllStop} from './Js/webglCanvas.js'
 
     
     $('#refightButton').click(()=>{
         reCount()
+        animationAllStop();
+        animationToRun();
     })
 
     $('.re-regist').click(()=>{

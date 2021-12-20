@@ -1,6 +1,7 @@
 import {reCount, countReturn} from './countFunction.js'
 
 
+let apiStartState = '';
 let apiTurnState = '';
 let cookieUuid = ''
 let apiEndState = false;
@@ -25,6 +26,7 @@ async function stateAPI(){
     $(".stateClass").text(`State : ${response.data.result.start} , ${response.data.result.turn} , ${response.data.result.end}`)
 
     // update api Turn State for game rules
+    apiStartState = response.data.result.start;
     apiTurnState =  response.data.result.turn;
     apiEndState = response.data.result.end;
     if (lastState != response.data.result.start && response.data.result.start==true) {
@@ -35,8 +37,14 @@ async function stateAPI(){
 }
 
 // update api Turn State to other js file
-function stateOutput(){
+function stateTurnOutput(){
     return apiTurnState
+    // return apiStartState,apiTurnState
+}
+
+function stateStartOutput(){
+    return apiStartState
+    // return apiStartState,apiTurnState
 }
 
 function showStart(){
@@ -129,4 +137,4 @@ function endCheckFunction(){
 }
 
 
-export {stateOutput, registNameAPI, endCheckFunction};
+export {stateTurnOutput, stateStartOutput, registNameAPI, endCheckFunction};

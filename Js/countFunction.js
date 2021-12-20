@@ -1,8 +1,11 @@
-import {stateOutput} from './stateAPI.js'
+import {stateTurnOutput, stateStartOutput} from './stateAPI.js'
+// import {animationToLose} from './webglCanvas.js'
 
 // para init
 let count = 0
-
+let apiStartState
+let apiTurnState
+let outAnimation = false;
 // register a shake event
 window.addEventListener('shake', shakeEventDidOccur, false);
 
@@ -11,27 +14,36 @@ function shakeEventDidOccur () {
     $(".main1-permision").fadeOut(200);
 
     // get api turn state from stateAPI.js with function
-    let apiTurnState = stateOutput()
+    apiTurnState = stateTurnOutput()
+    apiStartState = stateStartOutput()
 
     // check the alive state, if die then UI go dwon gray!
     if(apiTurnState) {
         $('.main3').delay(1000).fadeOut(200);
-        $('.main4-out').delay(1000).fadeIn(200);
+        outAnimation = true;
+        // animationToLose()
+        // $('.main4-out').delay(1000).fadeIn(200);
     }
 
     if(count == 299) {
         // $('.main3').delay(300).fadeOut(200);
         $('.main5-win').delay(100).fadeIn(200);
     }
-    
-    // update count UI
-    if(count<300) count += 1;
-    $(".countClass").text(`進度 : ${parseInt(count / 3)}% `);
-
+    console.log('apiStartState: ', apiStartState, apiTurnState);
+    if(apiStartState){
+        // update count UI
+        if(count<300) count += 1;
+        $(".countClass").text(`進度 : ${parseInt(count / 3)}% `);
+        
+    }else{
+        if(count<30) count += 1;
+        $(".countClass").text(`進度 : ${parseInt(count / 3)}% `);
+    }
 }
 
 function reCount(){
     count = 0;
+    outAnimation = false
     $('.main4-out').delay(100).fadeOut(200);
     $('.main3').delay(100).fadeIn(200);
     $(".countClass").text(`進度 : ${parseInt(count / 3)}% `);
@@ -42,10 +54,14 @@ function countReturn(){
     return count;
 }
 
+function shakeOut(){
+    return outAnimation;
+}
+
 // test button and don't need real shake
 $('#testCountButton').click(
     // count += 290,
     shakeEventDidOccur
 );
 
-export {reCount, countReturn}
+export {reCount, countReturn, shakeOut}

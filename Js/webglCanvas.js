@@ -1,7 +1,8 @@
 
     import * as THREE from 'https://d1xeexhxuygkal.cloudfront.net/S3webgl/build/three.module.js';
     import { FBXLoader } from 'https://d1xeexhxuygkal.cloudfront.net/S3webgl/export/jsm/loaders/FBXLoader.js';
-    import {stateOutput, endCheckFunction} from './stateAPI.js'
+    import {stateTurnOutput, endCheckFunction} from './stateAPI.js'
+    import {shakeOut} from'./countFunction.js'
 
     // https://d1xeexhxuygkal.cloudfront.net/S3webgl/export/jsm
     // https://d1xeexhxuygkal.cloudfront.net/S3webgl/build
@@ -13,6 +14,7 @@
 
     let mixer;
     let action;
+    let action2;
     var canvas;
 
     let mixerFloor;
@@ -25,9 +27,11 @@
     const loader = new FBXLoader();
 
 
-
+    let winState = false;
     let apiTurnState = false;
     let lastApiTurnState = false;
+    let outState = false;
+    let lastOutState = false;
     let actionState = false;
     let endCheck = 0
 
@@ -35,7 +39,7 @@
     var cookieColor = localStorage.getItem("cookieColor");
 
     console.log('this is webgl file and get color : ', cookieColor)
-    // cookieColor = 0
+    // cookieColor = 4
 
     init();
     animate();
@@ -50,7 +54,8 @@
         scene.background = new THREE.TextureLoader().load('../3dfile/background2.jpg');
         // scene.background = new THREE.TextureLoader().load('../pics/bg5.jpg');
         // scene.background = new THREE.Color( 0xa0a0a0 );
-        scene.fog = new THREE.Fog( 0xa0a0a0, 200, 2000 );
+        // scene.fog = new THREE.Fog( 0x000, 100, 1000 );
+        // scene.fog = new THREE.FogExp2(0x000,0.0011);
 
         const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
         hemiLight.position.set( 0, 200, 0 );
@@ -97,7 +102,7 @@
             // loader.load( '../3dfile/playerA_null.fbx', function ( object ) {
             const man_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/player'+cookieColor+'.png');
             loader.load( AWSPath+'/3dfile/player'+cookieColor+'.fbx', function ( object ) {
-            // loader.load( '../3dfile/boy2.fbx', function ( object ) {
+            // loader.load( '../3dfile/playerB_idle2.fbx', function ( object ) {
 
 
                 
@@ -129,6 +134,7 @@
                 } );
                 object.scale.multiplyScalar(7.10); 
                 object.rotation.y = 3.14;
+                object.name = "modelboy"
                 groupBoy.add( object );
             } );
 
@@ -142,11 +148,12 @@
 
 
 
-        // loader.load('../3dfile/wolf-head.fbx', function ( object ) {
-        loader.load(AWSPath+'/3dfile/rosehead.fbx', function ( object ) {
+
         // loader.load(AWSPath+'/3dfile/rosehead.fbx', function ( object ) {
+        loader.load('../3dfile/rosehead2.fbx', function ( object ) {
             console.log('3d head loading !')
-            const man_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/rose_rose_BaseColor.png');
+            const man_txt = new THREE.TextureLoader().load('../3dfile/rose_rose_BaseColor2.png');
+            // const man_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/rose_rose_BaseColor.png');
             man_txt.flipY = true; // we flip the texture so that its the right way up
             const man_mtl = new THREE.MeshPhongMaterial({
                 map: man_txt,
@@ -162,10 +169,10 @@
                 }
             } );
 
-            object.scale.multiplyScalar(16.1); 
+            object.scale.multiplyScalar(17.1); 
             object.rotation.y = 3.14
-            object.rotation.x = 0.14
-            object.position.y = -60
+            object.rotation.x = 0.25
+            object.position.y = -80
             object.name = 'roseHead';
 
             scene.add( object );
@@ -194,15 +201,26 @@
 
 
         const ballSpere = new THREE.SphereGeometry( 15, 32, 16 );
+        // material.map = new THREE.TextureLoader().load('textures/diffuse.jpg');
+        // material.bumpMap = new THREE.TextureLoader().load('textures/bump.jpg');     
+        // material.bumpScale = 0.015;
+        // const sphere = new THREE.Mesh( ballSpere, new THREE.MeshPhongMaterial( { 
+        //     // color: 0xffff00 
+        //     map: new THREE.TextureLoader().load(AWSPath+'/3dfile/music.jpg'),
+        //     // map: new THREE.TextureLoader().load(AWSPath+'/3dfile/playerA_1_new_boy_BaseColor.png'),
+        //     shininess: 10,
+        // } ) );
 
         const sphere = new THREE.Mesh( ballSpere, new THREE.MeshPhongMaterial( { 
             // color: 0xffff00 
             map: new THREE.TextureLoader().load(AWSPath+'/3dfile/music.jpg'),
             // map: new THREE.TextureLoader().load(AWSPath+'/3dfile/playerA_1_new_boy_BaseColor.png'),
+            // map : new THREE.TextureLoader().load('../pics/marball.jpg'),
+            bumpMap : new THREE.TextureLoader().load('../pics/marball_bump.jpg'),     
+            bumpScale : 0.515,
             shininess: 10,
-        } 
-            
-            ) );
+        } ) );
+
         sphere.receiveShadow = true;
         sphere.castShadow = true;
         sphere.material.needsUpdate = true;
@@ -251,6 +269,7 @@
         headRotationFunction()
         setFloorCome()
         boyReturnFunction()
+        outFunction()
 
     }
 
@@ -258,14 +277,16 @@
         
         let floorObject = scene.getObjectByName( "setFloor" );
         let state = endCheckFunction()
-        let apiTurnState = stateOutput();
+        
+
+        let apiTurnState = stateTurnOutput();
 
         // console.log('end state : ', state)
-        if(!state && !apiTurnState) floorObject.rotation.x += 0.031;
+        if((!state && !apiTurnState)&&!winState) floorObject.rotation.x += 0.031;
     }
 
     function headRotationFunction(){
-        apiTurnState = stateOutput();
+        apiTurnState = stateTurnOutput();
         if(lastApiTurnState != apiTurnState){
             
             let cube000 = scene.getObjectByName( "roseHead" );
@@ -273,8 +294,21 @@
                 {
                     y: cube000.rotation.y+Math.PI, ease: Linear.easeNone
                 });
+            animationAllStop();
+        }
+        if((lastApiTurnState != apiTurnState) && apiTurnState==false){
+            
+            animationToRun();
         }
         lastApiTurnState = apiTurnState;
+    }
+
+    function outFunction(){
+        outState = shakeOut()
+        if((lastOutState!= outState ) && outState){
+            animationToLose()
+        }
+        lastOutState = outState;
     }
 
     function boyReturnFunction(){   
@@ -298,15 +332,19 @@
             
             
         } );
-        loader.load( AWSPath+'/3dfile/action_idle.fbx', function ( object ) {
-            object.animations[ 0 ].name ="idle";
-            animationArray.push( object.animations[ 0 ]);     
 
-        } );
+        // loader.load( '../3dfile/playerB_idle2.fbx', function ( object ) {
+        // loader.load( AWSPath+'/3dfile/action_idle.fbx', function ( object ) {
+        //     object.animations[ 0 ].name ="idle";
+        //     animationArray.push( object.animations[ 0 ]);     
+
+        // } );
+
         loader.load( AWSPath+'/3dfile/action_run.fbx', function ( object ) {
             object.animations[ 0 ].name ="run";
-            animationArray.push( object.animations[ 0 ]);    
+            animationArray.push( object.animations[ 0 ]);   
             initAction(object.animations[ 0 ])
+
 
         } );
         // loader.load( '../3dfile/winAnamationOnly.fbx', function ( object ) {
@@ -322,6 +360,14 @@
         // action = mixer.clipAction( object.animations[0] );
         console.log('action : ', action);
         action.play();
+
+
+        // var selectedObject = scene.getObjectByName('groupBoy');
+
+        // selectedObject.scale.multiplyScalar(7.10); 
+        // selectedObject.rotation.y = 3.14;
+        // console.log("selectedObject ", selectedObject);
+        // object.name = "modelboy"
     }
 
 
@@ -337,6 +383,60 @@
         // animate();
     }
 
+
+    function JanimationPlay(name){
+        
+        const fSpeed = 0.1, tSpeed = 0.1;
+        // mixer.stopAllAction();
+        let randInt = Math.floor(Math.random() * animationArray.length);
+        // console.log(animationArray);
+        action2 = mixer.clipAction( animationArray.find(item=>item.name==name) );
+        action2.setLoop(THREE.LoopOnce);
+        action2.reset();
+        action2.play();
+        action.crossFadeTo(action2, fSpeed, true);
+        setTimeout(function() {
+            action2.enabled = true;
+            // action2.crossFadeTo(action, tSpeed, true);
+            action2.crossFadeTo(action, tSpeed, true);
+            // currentlyAnimating[0] = false;
+            console.log('play ...');
+            action.reset();
+            action.play();
+            }, action2._clip.duration * 1000 - ((tSpeed + fSpeed) * 1000));
+    }
+
+    function animnationToOther(name){
+        const fSpeed = 0.1, tSpeed = 0.1;
+        // mixer.stopAllAction();
+        let randInt = Math.floor(Math.random() * animationArray.length);
+        // console.log(animationArray);
+        action2 = mixer.clipAction( animationArray.find(item=>item.name==name) );
+        action2.setLoop();
+        // action2.setLoop(THREE.LoopOnce);
+        action2.reset();
+        action2.play();
+        // action2.uncacheClip()
+        action.crossFadeTo(action2, fSpeed, true);
+    }
+    
+    function animnationToBack(name){
+        const fSpeed = 0.1, tSpeed = 0.1;
+        action2.enabled = false;
+        // action2.stop();
+        action2.uncacheClip()
+
+        action2.reset();
+
+        action2.crossFadeTo(action, tSpeed, true);
+        // action2.stop();
+
+        // action2.crossFadeTo(action, tSpeed, false);
+        // currentlyAnimating[0] = false;
+        console.log('play ...');
+        action.reset();
+        action.play();
+    }
 
 
     // ******************************************************************** //
@@ -371,11 +471,84 @@
             console.log('z: ', cube000.position.z);
         } else if (keyCode == 86) {     
             // ******* v = 86 ********* //
-            let cube000 = scene.getObjectByName( "standCube" );
-            cube000.position.z += 3;
-            console.log('z: ', cube000.position.z);
+            // let cube000 = scene.getObjectByName( "standCube" );
+            // cube000.position.z += 3;
+            // console.log('z: ', cube000.position.z);
+            JanimationPlay('fail')
+            // animnationToWin('win')
+        }
+        else if(keyCode == 77){
+            // ******  < ******
+            animnationToOther('run')
+            // animnationToBack()
+        }
+        else if(keyCode == 188){
+            // ******  < ******
+            animnationToOther('win')
+            // animnationToBack()
+        }
+        else if(keyCode == 190){
+            // ****** >  ******
+            const fSpeed = 0.1, tSpeed = 0.1;
+            action2 = mixer.clipAction( animationArray.find(item=>item.name=='fail') );
+            action2.setLoop(THREE.LoopOnce);
+            action2.reset();
+            action2.play();
+            action.crossFadeTo(action2, fSpeed, true);
+            $('.main4-out').delay(900).fadeIn(200);
+        }
+        else if(keyCode == 191){
+            // stop use to idle
+            action.stop()
+            action2.stop()
+        }
+        else if(keyCode == 80){
+            winState = true;
+            // stop use to idle
+            let cube000 = scene.getObjectByName( "groupBoy" );
+            console.log('xxxxxx',cube000);
+            TweenMax.to(cube000.rotation, 0.3, 
+                {
+                    y: cube000.rotation.y+Math.PI, ease: Linear.easeNone
+                });
+            animationToWin();
+            $('.main5-win').delay(100).fadeIn(200);
         }
     }
+
+
+
+    // ******************************************************************** //
+    //                                                                      //
+    //       *********     Animation Controller      **********             //
+    //                                                                      //
+    // ******************************************************************** //
+
+    function animationToWin(){
+        animnationToOther('win');
+    }
+
+    function animationToRun(){
+        animnationToOther('run');
+    }
+
+    function animationToLose(){
+        if(action) action.stop();
+        if(action2) action2.stop();
+        const fSpeed = 0.1, tSpeed = 0.1;
+        action2 = mixer.clipAction( animationArray.find(item=>item.name=='fail') );
+        action2.setLoop(THREE.LoopOnce);
+        action2.reset();
+        action2.play();
+        action.crossFadeTo(action2, fSpeed, true);
+        $('.main4-out').delay(900).fadeIn(200);
+    }
+
+    function animationAllStop(){
+        if(action) action.stop();
+        if(action2) action2.stop();
+    }
+
 
 
 
@@ -456,4 +629,4 @@
     // ];
 
 
-    export {removeModelAndReload};
+    export {removeModelAndReload, animationToRun, animationAllStop};
