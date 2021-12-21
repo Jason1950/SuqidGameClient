@@ -2,7 +2,7 @@
     import * as THREE from 'https://d1xeexhxuygkal.cloudfront.net/S3webgl/build/three.module.js';
     import { FBXLoader } from 'https://d1xeexhxuygkal.cloudfront.net/S3webgl/export/jsm/loaders/FBXLoader.js';
     import {stateTurnOutput, endCheckFunction} from './stateAPI.js'
-    import {shakeOut} from'./countFunction.js'
+    import {shakeOut, winToEnd} from'./countFunction.js'
 
     // https://d1xeexhxuygkal.cloudfront.net/S3webgl/export/jsm
     // https://d1xeexhxuygkal.cloudfront.net/S3webgl/build
@@ -26,8 +26,9 @@
     const floorSize = 12000;
     const loader = new FBXLoader();
 
-
+    let winStopState = false;
     let winState = false;
+    let lastWinState = false;
     let apiTurnState = false;
     let lastApiTurnState = false;
     let outState = false;
@@ -39,7 +40,7 @@
     var cookieColor = localStorage.getItem("cookieColor");
 
     console.log('this is webgl file and get color : ', cookieColor)
-    // cookieColor = 4
+    // cookieColor = 2
 
     init();
     animate();
@@ -96,17 +97,12 @@
         async function boyLoad(){
             if (cookieColor==null) cookieColor = 0
             console.log('async 3d boy model load function!')
-
             // const man_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/playerA_1_new_boy_BaseColor.png');
-            // const man_txt = new THREE.TextureLoader().load('../3dfile/playerA_1_new_boy_BaseColor.png');
             // loader.load( '../3dfile/playerA_null.fbx', function ( object ) {
             const man_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/player'+cookieColor+'.png');
             loader.load( AWSPath+'/3dfile/player'+cookieColor+'.fbx', function ( object ) {
-            // loader.load( '../3dfile/playerB_idle2.fbx', function ( object ) {
+            // loader.load( '../3dfile/playerD_run.fbx', function ( object ) {
 
-
-                
-                
                 man_txt.flipY = true; // we flip the texture so that its the right way up
                 const man_mtl = new THREE.MeshPhongMaterial({
                     map: man_txt,
@@ -115,11 +111,9 @@
                 });
 
                 mixer = new THREE.AnimationMixer( object );
-                // action = mixer.clipAction( animationArray.find(item=>item.name=='fail') );
-
                 // action = mixer.clipAction( object.animations[0] );
-                // console.log('action : ', action);
                 // action.play();
+                // console.log('action : ', action);
 
                 loadAnimation().catch(error => {
                     console.error(error);
@@ -146,14 +140,9 @@
             console.error(error);
         });
 
-
-
-
-        // loader.load(AWSPath+'/3dfile/rosehead.fbx', function ( object ) {
         loader.load('../3dfile/rosehead2.fbx', function ( object ) {
             console.log('3d head loading !')
             const man_txt = new THREE.TextureLoader().load('../3dfile/rose_rose_BaseColor2.png');
-            // const man_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/rose_rose_BaseColor.png');
             man_txt.flipY = true; // we flip the texture so that its the right way up
             const man_mtl = new THREE.MeshPhongMaterial({
                 map: man_txt,
@@ -180,44 +169,13 @@
         } );
 
     
-        // ******************  圓形地殼  *****************//
-        loader.load('../3dfile/setFloor3.fbx', function ( object ) {
-            console.log('3d setFloor3 loading !')
-            object.traverse( function ( child ) {
-                if ( child.isMesh ) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                    // child.material = man_mtl;
-                }
-            } );
-            object.scale.multiplyScalar(0.61); 
-            object.position.y = 20
-            object.position.z = -190
-            object.rotation.set(-190,0,0)
-            groupSetFloor.add( object );            
-        } );
-        // groupSetFloor.name = 'setFloor';
-        // scene.add( groupSetFloor );
+ 
 
 
         const ballSpere = new THREE.SphereGeometry( 15, 32, 16 );
-        // material.map = new THREE.TextureLoader().load('textures/diffuse.jpg');
-        // material.bumpMap = new THREE.TextureLoader().load('textures/bump.jpg');     
-        // material.bumpScale = 0.015;
-        // const sphere = new THREE.Mesh( ballSpere, new THREE.MeshPhongMaterial( { 
-        //     // color: 0xffff00 
-        //     map: new THREE.TextureLoader().load(AWSPath+'/3dfile/music.jpg'),
-        //     // map: new THREE.TextureLoader().load(AWSPath+'/3dfile/playerA_1_new_boy_BaseColor.png'),
-        //     shininess: 10,
-        // } ) );
 
         const sphere = new THREE.Mesh( ballSpere, new THREE.MeshPhongMaterial( { 
-            // color: 0xffff00 
             map: new THREE.TextureLoader().load(AWSPath+'/3dfile/music.jpg'),
-            // map: new THREE.TextureLoader().load(AWSPath+'/3dfile/playerA_1_new_boy_BaseColor.png'),
-            // map : new THREE.TextureLoader().load('../pics/marball.jpg'),
-            bumpMap : new THREE.TextureLoader().load('../pics/marball_bump.jpg'),     
-            bumpScale : 0.515,
             shininess: 10,
         } ) );
 
@@ -240,8 +198,6 @@
         renderer.setPixelRatio( window.devicePixelRatio );
         renderer.setSize( window.innerWidth*resizePara, window.innerHeight*resizePara );
         renderer.shadowMap.enabled = true;
-
-        // window.addEventListener( 'resize', onWindowResize );
         document.addEventListener("keydown", onDocumentKeyDown, false);
         onWindowResize();
     }
@@ -251,7 +207,6 @@
         camera.updateProjectionMatrix();
         renderer.setSize( window.innerWidth*resizePara, window.innerHeight*resizePara );
     }
-
 
 
 
@@ -270,7 +225,7 @@
         setFloorCome()
         boyReturnFunction()
         outFunction()
-
+        WinToEndForAnimation()
     }
 
     function setFloorCome(){
@@ -281,8 +236,8 @@
 
         let apiTurnState = stateTurnOutput();
 
-        // console.log('end state : ', state)
-        if((!state && !apiTurnState)&&!winState) floorObject.rotation.x += 0.031;
+        // console.log('end state : ', winStopState)
+        if((!state && !apiTurnState)&&!winStopState) floorObject.rotation.x += 0.031;
     }
 
     function headRotationFunction(){
@@ -329,25 +284,16 @@
         loader.load( AWSPath+'/3dfile/action_fail.fbx', function ( object ) {
             object.animations[ 0 ].name ="fail";
             animationArray.push( object.animations[ 0 ]);  
-            
-            
         } );
 
-        // loader.load( '../3dfile/playerB_idle2.fbx', function ( object ) {
-        // loader.load( AWSPath+'/3dfile/action_idle.fbx', function ( object ) {
-        //     object.animations[ 0 ].name ="idle";
-        //     animationArray.push( object.animations[ 0 ]);     
-
-        // } );
-
+        // loader.load( '../3dfile/playerD_run.fbx', function ( object ) {
         loader.load( AWSPath+'/3dfile/action_run.fbx', function ( object ) {
             object.animations[ 0 ].name ="run";
             animationArray.push( object.animations[ 0 ]);   
             initAction(object.animations[ 0 ])
-
-
         } );
-        // loader.load( '../3dfile/winAnamationOnly.fbx', function ( object ) {
+
+        // loader.load( '../3dfile/playerD_win.fbx', function ( object ) {
         loader.load( AWSPath+'/3dfile/action_win.fbx', function ( object ) {
             object.animations[ 0 ].name ="win";
             animationArray.push( object.animations[ 0 ]);        
@@ -360,32 +306,20 @@
         // action = mixer.clipAction( object.animations[0] );
         console.log('action : ', action);
         action.play();
-
-
-        // var selectedObject = scene.getObjectByName('groupBoy');
-
-        // selectedObject.scale.multiplyScalar(7.10); 
-        // selectedObject.rotation.y = 3.14;
-        // console.log("selectedObject ", selectedObject);
-        // object.name = "modelboy"
     }
 
 
     function removeModelAndReload(object) {
         var selectedObject = scene.getObjectByName('groupBoy');
         scene.remove( selectedObject );
-
         const groupBoy = new THREE.Group();
         boyLoad().catch(error => {
             console.error(error);
         });
-
-        // animate();
     }
 
 
     function JanimationPlay(name){
-        
         const fSpeed = 0.1, tSpeed = 0.1;
         // mixer.stopAllAction();
         let randInt = Math.floor(Math.random() * animationArray.length);
@@ -505,6 +439,7 @@
         else if(keyCode == 80){
             winState = true;
             // stop use to idle
+            winStopState = true;
             let cube000 = scene.getObjectByName( "groupBoy" );
             console.log('xxxxxx',cube000);
             TweenMax.to(cube000.rotation, 0.3, 
@@ -549,84 +484,19 @@
         if(action2) action2.stop();
     }
 
-
-
-
-
-
-    // ******************************************************************** //
-    //                                                                      //
-    //            *********     Controller      **********                  //
-    //                                                                      //
-    // ******************************************************************** //
-    // Controlls
-    // const controls = new OrbitControls( camera, renderer.domElement );
-    // controls.maxPolarAngle = Math.PI / 2 - 0.11;
-    // controls.minPolarAngle = Math.PI / 3 - 0.15;
-    // controls.maxAzimuthAngle = Math.PI *1/4 ;   //from 120 ~ -180 degree 
-    // controls.minAzimuthAngle = -Math.PI *2/3 ;
-    // controls.enableZoom = false;
-    // controls.dampingFactor = 0.1;
-    // // controls.autoRotate = false; // Toggle this if you'd like the chair to automatically rotate
-    // // controls.autoRotateSpeed = 0.2; // 30
-    // controls.target.set( 0, 100, 0 );
-    // controls.update();
-
-
-
-    // ******************************************************************** //
-    //                                                                      //
-    //               *********     floor      **********                    //
-    //                                                                      //
-    // ******************************************************************** //
-    //
-    // let floor_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/floor.jpg');
-    // floor_txt.wrapS = floor_txt.wrapT = THREE.RepeatWrapping;
-    // floor_txt.offset.set( 0, 0 );
-    // floor_txt.repeat.set( 4, 40 ); // 橫向、直向 複製
-    // var material = new THREE.MeshPhongMaterial( {
-    //     color: 0xffffff,
-    //     specular:0x111111,
-    //     shininess: 10,
-    //     map: floor_txt,
-    // } );
-    // const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 10, floorSize ), // new THREE.MeshPhongMaterial( { color: 0x932119, depthWrite: false } ) 
-    //     material
-    // );
-    // mesh.rotation.x = - Math.PI / 2;
-    // mesh.receiveShadow = true;
-    // mesh.position.y = 1;
-    // mesh.position.z -= floorSize/2;
-    // mesh.name = 'floor';
-    // scene.add( mesh );
-    // 
-    // function floorCome(){
-    //     let floorObject = scene.getObjectByName( "floor" );
-    //     floorObject.position.z += 1.5;
-    // }
-
-
-
-    // ******************************************************************** //
-    //                                                                      //
-    //              *********     Devil head      **********                //
-    //                                                                      //
-    // ******************************************************************** //
-    // texture
-    // var materials = [
-    //     new THREE.MeshPhongMaterial( { color: 0xfbfbfb, depthWrite: false } ),
-    //     new THREE.MeshPhongMaterial( { color: 0xfbfbfb, depthWrite: false } ),
-    //     new THREE.MeshPhongMaterial( { color: 0xfbfbfb, depthWrite: false } ),
-    //     new THREE.MeshPhongMaterial( { color: 0xfbfbfb, depthWrite: false } ),
-    //     new THREE.MeshLambertMaterial({
-    //         // map: THREE.ImageUtils.loadTexture(AWSPath+'/3dfile/back.jpg')
-    //         map: THREE.ImageUtils.loadTexture('../3dfile/back.jpg')
-    //     }),
-    //     new THREE.MeshLambertMaterial({
-    //         // map: THREE.ImageUtils.loadTexture(AWSPath+'/3dfile/back.jpg')
-    //         map: THREE.ImageUtils.loadTexture('../3dfile/devil-head.jpg')
-    //     })
-    // ];
-
+    function WinToEndForAnimation(){
+        winState = winToEnd();
+        if ((winState != lastWinState)&&winState){
+        winStopState = true;
+        let cube000 = scene.getObjectByName( "groupBoy" );
+        console.log('xxxxxx',cube000);
+        TweenMax.to(cube000.rotation, 0.3, 
+            {
+                y: cube000.rotation.y+Math.PI, ease: Linear.easeNone
+            });
+        animationToWin();
+        $('.main5-win').delay(100).fadeIn(200);}
+        lastWinState = winState
+    }
 
     export {removeModelAndReload, animationToRun, animationAllStop};

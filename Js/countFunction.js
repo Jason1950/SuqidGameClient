@@ -6,6 +6,7 @@ let count = 0
 let apiStartState
 let apiTurnState
 let outAnimation = false;
+let winState = false;
 // register a shake event
 window.addEventListener('shake', shakeEventDidOccur, false);
 
@@ -28,6 +29,7 @@ function shakeEventDidOccur () {
     if(count == 299) {
         // $('.main3').delay(300).fadeOut(200);
         $('.main5-win').delay(100).fadeIn(200);
+        winState = true
     }
     console.log('apiStartState: ', apiStartState, apiTurnState);
     if(apiStartState){
@@ -58,10 +60,14 @@ function shakeOut(){
     return outAnimation;
 }
 
+function winToEnd(){
+    return winState;
+}
+
 // test button and don't need real shake
 $('#testCountButton').click(
     // count += 290,
     shakeEventDidOccur
 );
 
-export {reCount, countReturn, shakeOut}
+export {reCount, countReturn, shakeOut, winToEnd}

@@ -8,17 +8,42 @@ let apiEndState = false;
 let lastState = false;
 let count = 0;
 
+const server = 'Core';
+
+const urlCoreServer = 'https://core-srv-dev.appxervice.com';
+const urlAWSServer = '';
+const apiCoreKEY = 'WDSlnSQvauvJmzhwjCQFtHjd';
+const apiAWSKEY = '';
+
+let KEY = '';
+let URL = '';
+
+if (server == 'Core'){
+    URL=urlCoreServer;
+    KEY=apiCoreKEY;
+    console.log('The Connect Server is Core !');
+}
+else if(server == 'AWS'){
+    URL=urlAWSServer;
+    KEY=apiAWSKEY;
+    console.log('The Connect Server is AWS !');
+
+}
+
+
+
 // api header info
 const headConst = {
     headers: {
-        'apiKey': 'WDSlnSQvauvJmzhwjCQFtHjd',
+        'apiKey': KEY,
         "Content-Type": "application/json"
         }
 }
 
+
 // axios api function
 async function stateAPI(){
-    let response = await axios.get('https://core-srv-dev.appxervice.com/api/squid/queryGameStatus',
+    let response = await axios.get(URL+'/api/squid/queryGameStatus',
         headConst
     )
     // debug messege
@@ -95,7 +120,7 @@ async function registNameAPI(name){
         "color": "0"
     });
     
-    let response = await axios.post('https://core-srv-dev.appxervice.com/api/squid/createUser',
+    let response = await axios.post(URL+'/api/squid/createUser',
         data,    
         headConst
     )
@@ -116,7 +141,7 @@ function countUpdateData(cookieUuid){
 }
 
 async function updateUserData(uuid,count0){
-    const url = 'https://core-srv-dev.appxervice.com/api/squid/updatUserData'
+    const url = URL+'/api/squid/updatUserData'
     const data = JSON.stringify({
         "uuid": uuid,
         "alive": true,
