@@ -113,11 +113,11 @@ function showStart(){
 
 
 
-async function registNameAPI(name){
+async function registNameAPI(name, color){
 
     const data = JSON.stringify({
         "username": name,
-        "color": "0"
+        "color": color.toString()
     });
     
     let response = await axios.post(URL+'/api/squid/createUser',

@@ -4,7 +4,7 @@ import {stateTurnOutput, stateStartOutput} from './stateAPI.js'
 const testWinCount = 100;
 const formalWinCount = 300;
 
-let winCount = formalWinCount;
+let winCount = testWinCount;
 
 // para init
 let count = 0

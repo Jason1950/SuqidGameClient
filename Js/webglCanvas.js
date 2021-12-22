@@ -2,7 +2,7 @@
     import * as THREE from 'https://d1xeexhxuygkal.cloudfront.net/S3webgl/build/three.module.js';
     import { FBXLoader } from 'https://d1xeexhxuygkal.cloudfront.net/S3webgl/export/jsm/loaders/FBXLoader.js';
     import {stateTurnOutput, endCheckFunction} from './stateAPI.js'
-    import {shakeOut, winToEnd} from'./countFunction.js'
+    import {shakeOut, winToEnd, countReturn} from'./countFunction.js'
 
     // https://d1xeexhxuygkal.cloudfront.net/S3webgl/export/jsm
     // https://d1xeexhxuygkal.cloudfront.net/S3webgl/build
@@ -34,6 +34,7 @@
     let outState = false;
     let lastOutState = false;
     let actionState = false;
+    let beforewinAllStopState = false;
     let endCheck = 0
 
 
@@ -84,10 +85,10 @@
         // standCube.name = 'standCube';
         // scene.add(standCube);
 
-        const grid = new THREE.GridHelper( 20, 20, 0x000000, 0x000000 );
-        grid.material.opacity = 0.2;
-        grid.material.transparent = true;
-        scene.add( grid );
+        // const grid = new THREE.GridHelper( 20, 20, 0x000000, 0x000000 );
+        // grid.material.opacity = 0.2;
+        // grid.material.transparent = true;
+        // scene.add( grid );
 
 
 
@@ -262,23 +263,24 @@
         if ( mixer ) mixer.update( delta );
         
         renderer.render( scene, camera );
+        if (!beforewinAllStopState){
         headRotationFunction()
         setFloorCome()
-        boyReturnFunction()
         outFunction()
-        WinToEndForAnimation()
+        WinToEndForAnimation()}
+        endOutFunction()
     }
 
     function setFloorCome(){
         
         let floorObject = scene.getObjectByName( "setFloor" );
-        let state = endCheckFunction()
+
         
 
         let apiTurnState = stateTurnOutput();
 
         // console.log('end state : ', winStopState)
-        if((!state && !apiTurnState)&&!winStopState) floorObject.rotation.x += 0.031;
+        if((!apiTurnState)&&!winStopState) floorObject.rotation.x += 0.031;
     }
 
     function headRotationFunction(){
@@ -307,18 +309,22 @@
         lastOutState = outState;
     }
 
-    function boyReturnFunction(){   
-        let cube000 = scene.getObjectByName( "groupBoy" );
-        
-        let state = endCheckFunction()
-        
-        if(state && endCheck==0){
-            endCheck += 1
-            TweenMax.to(cube000.rotation, 0.3, 
-            {
-                y: cube000.rotation.y+Math.PI, ease: Linear.easeNone
-            });}
+    function endOutFunction(){
+        let end = endCheckFunction()
+        let counttimes = countReturn()
+        if (end &&(counttimes<=100)) {
+            if(action) action.stop();
+            if(action2) action2.stop();
+            const fSpeed = 0.1, tSpeed = 0.1;
+            action2 = mixer.clipAction( animationArray.find(item=>item.name=='fail') );
+            action2.setLoop(THREE.LoopOnce);
+            action2.reset();
+            action2.play();
+            action.crossFadeTo(action2, fSpeed, true);
+            $('.main7-end-out').delay(900).fadeIn(200);
+        }
     }
+
     
 
     async function loadAnimation(){
@@ -529,6 +535,12 @@
 
     function WinToEndForAnimation(){
         winState = winToEnd();
+
+        // 12.22 to end win or lose
+        let end = endCheckFunction()
+        let counttimes = countReturn()
+        if (end &&(counttimes>100)) winState = true;
+
         if ((winState != lastWinState)&&winState){
         winStopState = true;
         let cube000 = scene.getObjectByName( "groupBoy" );
@@ -538,7 +550,9 @@
                 y: cube000.rotation.y+Math.PI, ease: Linear.easeNone
             });
         animationToWin();
-        $('.main5-win').delay(100).fadeIn(200);}
+        $('.main5-win').delay(100).fadeIn(200);
+        beforewinAllStopState = true;
+    }
         lastWinState = winState
     }
 
