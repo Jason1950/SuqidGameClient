@@ -11,9 +11,9 @@ let count = 0;
 const server = 'Core';
 
 const urlCoreServer = 'https://core-srv-dev.appxervice.com';
-const urlAWSServer = '';
+const urlAWSServer = 'https://taoyuan-rosegame.sstcxervice.com/';
 const apiCoreKEY = 'WDSlnSQvauvJmzhwjCQFtHjd';
-const apiAWSKEY = '';
+const apiAWSKEY = 'KDSlnRQvauvImzhwjCQFtSjd';
 
 let KEY = '';
 let URL = '';

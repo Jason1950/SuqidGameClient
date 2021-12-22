@@ -1,6 +1,11 @@
 import {stateTurnOutput, stateStartOutput} from './stateAPI.js'
 // import {animationToLose} from './webglCanvas.js'
 
+const testWinCount = 100;
+const formalWinCount = 300;
+
+let winCount = formalWinCount;
+
 // para init
 let count = 0
 let apiStartState
@@ -18,15 +23,9 @@ function shakeEventDidOccur () {
     apiTurnState = stateTurnOutput()
     apiStartState = stateStartOutput()
 
-    // check the alive state, if die then UI go dwon gray!
-    if(apiTurnState) {
-        $('.main3').delay(1000).fadeOut(200);
-        outAnimation = true;
-        // animationToLose()
-        // $('.main4-out').delay(1000).fadeIn(200);
-    }
+    
 
-    if(count == 299) {
+    if(count == (winCount-1)) {
         // $('.main3').delay(300).fadeOut(200);
         $('.main5-win').delay(100).fadeIn(200);
         winState = true
@@ -34,12 +33,20 @@ function shakeEventDidOccur () {
     console.log('apiStartState: ', apiStartState, apiTurnState);
     if(apiStartState){
         // update count UI
-        if(count<300) count += 1;
-        $(".countClass").text(`進度 : ${parseInt(count / 3)}% `);
+        if(count<winCount) count += 1;
+        $(".countClass").text(`進度 : ${parseInt(count*100 / winCount)}% `);
         
     }else{
         if(count<30) count += 1;
-        $(".countClass").text(`進度 : ${parseInt(count / 3)}% `);
+        $(".countClass").text(`進度 : ${parseInt(count*100 / winCount)}% `);
+    }
+
+    // check the alive state, if die then UI go dwon gray!
+    if(apiTurnState && !winState) {
+        $('.main3').delay(1000).fadeOut(200);
+        outAnimation = true;
+        // animationToLose()
+        // $('.main4-out').delay(1000).fadeIn(200);
     }
 }
 
@@ -48,7 +55,7 @@ function reCount(){
     outAnimation = false
     $('.main4-out').delay(100).fadeOut(200);
     $('.main3').delay(100).fadeIn(200);
-    $(".countClass").text(`進度 : ${parseInt(count / 3)}% `);
+    $(".countClass").text(`進度 : ${parseInt(count*100 / winCount)}% `);
 
 }
 

@@ -52,14 +52,15 @@
         scene = new THREE.Scene();
 
         // scene.background = new THREE.TextureLoader().load(AWSPath+'/3dfile/background.jpg');
-        scene.background = new THREE.TextureLoader().load('../3dfile/background2.jpg');
+        scene.background = new THREE.TextureLoader().load(AWSPath+'/3dfile/background2.jpg');
         // scene.background = new THREE.TextureLoader().load('../pics/bg5.jpg');
         // scene.background = new THREE.Color( 0xa0a0a0 );
         // scene.fog = new THREE.Fog( 0x000, 100, 1000 );
         // scene.fog = new THREE.FogExp2(0x000,0.0011);
-
-        const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
-        hemiLight.position.set( 0, 200, 0 );
+        
+        const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x000f00 , 0.8);
+        // const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 , 0.4);
+        hemiLight.position.set( 0, 2000, 0 );
         scene.add( hemiLight );
 
         const dirLight = new THREE.DirectionalLight( 0xffffff );
@@ -94,13 +95,15 @@
         const groupBoy = new THREE.Group();
         const groupSetFloor = new THREE.Group();
 
+        
+
         async function boyLoad(){
             if (cookieColor==null) cookieColor = 0
             console.log('async 3d boy model load function!')
             // const man_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/playerA_1_new_boy_BaseColor.png');
             // loader.load( '../3dfile/playerA_null.fbx', function ( object ) {
             const man_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/player'+cookieColor+'.png');
-            loader.load( AWSPath+'/3dfile/player'+cookieColor+'.fbx', function ( object ) {
+            loader.load( AWSPath+'/3dfile/player'+cookieColor+'_idle.fbx', function ( object ) {
             // loader.load( '../3dfile/playerBB.fbx', function ( object ) {
 
                 man_txt.flipY = true; // we flip the texture so that its the right way up
@@ -116,9 +119,13 @@
                 // action.play();
                 // console.log('action : ', action);
 
+                object.animations[ 0 ].name ="idle";
+                animationArray.push( object.animations[ 0 ]);  
+                
                 loadAnimation().catch(error => {
                     console.error(error);
                 });
+                
 
                 object.traverse( function ( child ) {
                     if ( child.isMesh ) {
@@ -141,9 +148,9 @@
             console.error(error);
         });
 
-        loader.load('../3dfile/rosehead2.fbx', function ( object ) {
+        loader.load(AWSPath+'/3dfile/rosehead2.fbx', function ( object ) {
             console.log('3d head loading !')
-            const man_txt = new THREE.TextureLoader().load('../3dfile/rose_rose_BaseColor2.png');
+            const man_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/rose_rose_BaseColor2.png');
             man_txt.flipY = true; // we flip the texture so that its the right way up
             const man_mtl = new THREE.MeshPhongMaterial({
                 map: man_txt,
@@ -170,13 +177,23 @@
         } );
 
         // ******************  圓形地殼  *****************//
-        loader.load('../3dfile/setFloor9.fbx', function ( object ) {
+        const ball_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/mud01.jpg');
+        
+        loader.load(AWSPath+'/3dfile/setFloor8.fbx', function ( object ) {
             console.log('3d setFloor3 loading !')
+
+            // ball_txt.flipY = true; // we flip the texture so that its the right way up
+        let ball_txt2 = new THREE.MeshPhongMaterial({
+            map: ball_txt,
+            color: 0xF3F3F3,
+            skinning: false
+        });
+
             object.traverse( function ( child ) {
                 if ( child.isMesh ) {
                     child.castShadow = true;
                     child.receiveShadow = true;
-                    // child.material = man_mtl;
+                    child.material = ball_txt2;
                 }
             } );
             // object.scale.multiplyScalar(0.35); 
@@ -305,20 +322,22 @@
     
 
     async function loadAnimation(){
-        loader.load( AWSPath+'/3dfile/action_fail.fbx', function ( object ) {
+        loader.load( AWSPath+'/3dfile/player'+cookieColor+'_fail.fbx', function ( object ) {
             object.animations[ 0 ].name ="fail";
             animationArray.push( object.animations[ 0 ]);  
         } );
 
         // loader.load( '../3dfile/playerD_run.fbx', function ( object ) {
-        loader.load( AWSPath+'/3dfile/action_run.fbx', function ( object ) {
+
+        loader.load( AWSPath+'/3dfile/player'+cookieColor+'_run.fbx', function ( object ) {
             object.animations[ 0 ].name ="run";
             animationArray.push( object.animations[ 0 ]);   
             initAction(object.animations[ 0 ])
         } );
 
         // loader.load( '../3dfile/playerD_win.fbx', function ( object ) {
-        loader.load( AWSPath+'/3dfile/action_win.fbx', function ( object ) {
+           
+        loader.load( AWSPath+'/3dfile/player'+cookieColor+'_win.fbx', function ( object ) {
             object.animations[ 0 ].name ="win";
             animationArray.push( object.animations[ 0 ]);        
 
