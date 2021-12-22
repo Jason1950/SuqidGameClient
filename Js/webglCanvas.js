@@ -169,8 +169,31 @@
 
         } );
 
-    
- 
+        // ******************  圓形地殼  *****************//
+        loader.load('../3dfile/setFloor9.fbx', function ( object ) {
+            console.log('3d setFloor3 loading !')
+            object.traverse( function ( child ) {
+                if ( child.isMesh ) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                    // child.material = man_mtl;
+                }
+            } );
+            // object.scale.multiplyScalar(0.35); 
+            object.scale.set(0.52,0.35,0.35); 
+            // object.position.y = 20
+            // object.position.z = -190
+            // object.rotation.set(-190,0,0)
+            groupSetFloor.add( object );            
+        } );
+        groupSetFloor.name = 'setFloor';
+        
+
+        scene.add( groupSetFloor );
+        var selectedObject = scene.getObjectByName('setFloor');
+        selectedObject.position.y = -95
+        selectedObject.position.z = -160
+            
 
 
         const ballSpere = new THREE.SphereGeometry( 15, 32, 16 );
@@ -185,11 +208,11 @@
         sphere.material.needsUpdate = true;
 
 
-        sphere.name = 'setFloor';
-        sphere.scale.multiplyScalar(15.61); 
-        sphere.position.y -= 160;
-        sphere.position.z -= 200;
-        scene.add( sphere );
+        // sphere.name = 'setFloor';
+        // sphere.scale.multiplyScalar(15.61); 
+        // sphere.position.y -= 160;
+        // sphere.position.z -= 200;
+        // scene.add( sphere );
 
 
         
