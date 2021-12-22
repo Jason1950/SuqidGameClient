@@ -40,7 +40,7 @@
     var cookieColor = localStorage.getItem("cookieColor");
 
     console.log('this is webgl file and get color : ', cookieColor)
-    // cookieColor = 2
+    // cookieColor = 3
 
     init();
     animate();
@@ -101,7 +101,7 @@
             // loader.load( '../3dfile/playerA_null.fbx', function ( object ) {
             const man_txt = new THREE.TextureLoader().load(AWSPath+'/3dfile/player'+cookieColor+'.png');
             loader.load( AWSPath+'/3dfile/player'+cookieColor+'.fbx', function ( object ) {
-            // loader.load( '../3dfile/playerD_run.fbx', function ( object ) {
+            // loader.load( '../3dfile/playerBB.fbx', function ( object ) {
 
                 man_txt.flipY = true; // we flip the texture so that its the right way up
                 const man_mtl = new THREE.MeshPhongMaterial({
@@ -111,6 +111,7 @@
                 });
 
                 mixer = new THREE.AnimationMixer( object );
+
                 // action = mixer.clipAction( object.animations[0] );
                 // action.play();
                 // console.log('action : ', action);
