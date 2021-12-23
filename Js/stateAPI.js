@@ -11,7 +11,7 @@ let count = 0;
 const server = 'AWS';
 
 const urlCoreServer = 'https://core-srv-dev.appxervice.com';
-const urlAWSServer = 'https://taoyuan-rosegame.sstcxervice.com/';
+const urlAWSServer = 'https://taoyuan-rosegame.sstcxervice.com';
 const apiCoreKEY = 'WDSlnSQvauvJmzhwjCQFtHjd';
 const apiAWSKEY = 'KDSlnRQvauvImzhwjCQFtSjd';
 
@@ -136,6 +136,7 @@ async function registNameAPI(name, color){
 }
 
 function countUpdateData(cookieUuid){
+    if (cookieUuid==null) cookieUuid=''
     if((cookieUuid.length)>1 && count%10 ==0) updateUserData(cookieUuid, count)
     // console.log(cookieUuid, count)
 }
