@@ -336,6 +336,8 @@
         // loader.load( '../3dfile/playerD_run.fbx', function ( object ) {
 
         loader.load( AWSPath+'/3dfile/player'+cookieColor+'_run.fbx', function ( object ) {
+        // loader.load( '../3dfile/player'+cookieColor+'_run.fbx', function ( object ) {
+            console.log('/3dfile/player'+cookieColor+'_run.fbx')
             object.animations[ 0 ].name ="run";
             animationArray.push( object.animations[ 0 ]);   
             initAction(object.animations[ 0 ])
@@ -539,7 +541,7 @@
         // 12.22 to end win or lose
         let end = endCheckFunction()
         let counttimes = countReturn()
-        if (end &&(counttimes>100)) winState = true;
+        if (end &&(counttimes>150)) winState = true;
 
         if ((winState != lastWinState)&&winState){
         winStopState = true;
