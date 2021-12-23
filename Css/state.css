@@ -210,6 +210,7 @@
 }
 
 .main2-regist{
+    z-index: 1;
     position: absolute;
     font-size: 3em;
     font-weight: 900;
