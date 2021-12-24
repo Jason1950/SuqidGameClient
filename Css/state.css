@@ -210,7 +210,7 @@
 }
 
 .main2-regist{
-    z-index: 1;
+    z-index: 2;
     position: absolute;
     font-size: 3em;
     font-weight: 900;
@@ -284,6 +284,7 @@
     top: 47%;
     transform: translate(-52%,-50%);
     width: 12%;
+    z-index: 2;
 }
 
 #left-button01{
@@ -294,6 +295,8 @@
     top: 47.5%;
     transform: translate(-52%,-50%);
     width: 13%;
+    z-index: 2;
+
 }
 
 .main2-regist #content2{
@@ -350,6 +353,17 @@
     top: 7%;
     transform: translate(-50%,-50%);
     width: 10%;
+    /* z-index: 1; */
+}
+
+#headicon-bg{
+    justify-content: center;
+    display: flex;
+    position: absolute;
+    left: 7%;
+    top: 7%;
+    transform: translate(-50%,-50%);
+    width: 11%;
 }
 
 .nameBox{
@@ -373,6 +387,7 @@
     display: flex;
     background-image: url('https://d1xeexhxuygkal.cloudfront.net/pics/out-bg3.png');
     color: #FFF;
+    z-index :1;
 }
 
 #end-out{

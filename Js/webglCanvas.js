@@ -7,6 +7,15 @@
     // https://d1xeexhxuygkal.cloudfront.net/S3webgl/export/jsm
     // https://d1xeexhxuygkal.cloudfront.net/S3webgl/build
 
+    // AWS : 120
+    // Core : 40
+
+    const Core = 40;
+    const AWS = 120;
+
+    let endConditionCount = AWS;
+
+
     const  AWSPath = 'https://d1xeexhxuygkal.cloudfront.net/S3webgl'
 
     let camera, scene, renderer, stats;
@@ -36,6 +45,8 @@
     let actionState = false;
     let beforewinAllStopState = false;
     let endCheck = 0
+
+
 
 
     var cookieColor = localStorage.getItem("cookieColor");
@@ -264,11 +275,13 @@
         
         renderer.render( scene, camera );
         if (!beforewinAllStopState){
-        headRotationFunction()
-        setFloorCome()
-        outFunction()
-        WinToEndForAnimation()}
-        endOutFunction()
+            headRotationFunction()
+            setFloorCome()
+            outFunction()
+            WinToEndForAnimation()
+            endOutFunction()
+        }
+        
     }
 
     function setFloorCome(){
@@ -312,7 +325,7 @@
     function endOutFunction(){
         let end = endCheckFunction()
         let counttimes = countReturn()
-        if (end &&(counttimes<=100)) {
+        if (end &&(counttimes<= endConditionCount )) {
             if(action) action.stop();
             if(action2) action2.stop();
             const fSpeed = 0.1, tSpeed = 0.1;
@@ -499,6 +512,7 @@
                 });
             animationToWin();
             $('.main5-win').delay(100).fadeIn(200);
+            beforewinAllStopState = true;
         }
     }
 
@@ -541,7 +555,7 @@
         // 12.22 to end win or lose
         let end = endCheckFunction()
         let counttimes = countReturn()
-        if (end &&(counttimes>150)) winState = true;
+        if (end &&(counttimes > endConditionCount)) winState = true;
 
         if ((winState != lastWinState)&&winState){
         winStopState = true;

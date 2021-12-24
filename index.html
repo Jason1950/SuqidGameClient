@@ -27,6 +27,10 @@
                 console.log('declare cookieColor : ',localStorage.getItem("cookieColor"))
             }
 
+            
+
+
+
         } catch (exception) {
 
             console.log(`${exception.name}: ${exception.message}`)
@@ -63,7 +67,8 @@
     <script src="./Js/shakeInit.js" type="module"></script>
 
     <!--Tween-->
-    <script type="text/javascript" src="./Js/jsm/greensock/TweenMax.min.js"></script>
+    <script type="text/javascript" src="./Js/TweenMax.min.js"></script>
+    <!-- <script type="text/javascript" src="./Js/jsm/greensock/TweenMax.min.js"></script> -->
 
     <!-- Other Js file -->
     <script src="./Js/stateAPI.js" type="module"></script>
@@ -101,7 +106,9 @@
 
     <div class="main3">
         <img id="title03" src="https://d1xeexhxuygkal.cloudfront.net/pics/title.png">
-        <img id="headicon01" src="https://d1xeexhxuygkal.cloudfront.net/pics/headicon.png">
+        <img id="headicon-bg" src="https://d1xeexhxuygkal.cloudfront.net/pics/circle-bg.png">
+        <!-- <img id="headicon01" src="1"> -->
+        <img id="headicon01" src="https://d1xeexhxuygkal.cloudfront.net/pics/headicon0.png">
 
         <div class="stateClass hideClass" >non</div>
         <div class="iosClass hideClass">ios : no</div>
@@ -163,6 +170,9 @@
             refeshCount += 1;
             localStorage.setItem("refreshCount",refeshCount);
             $(".main2-regist").hide()
+            let iconpath = "https://d1xeexhxuygkal.cloudfront.net/pics/headicon"+ cookieColor +".png"
+            $('#headicon01').attr("src",iconpath);
+
         }
 
         function rightSelect(){
@@ -177,7 +187,10 @@
             localStorage.setItem("cookieColor",colornumber.toString());
             let path = "https://d1xeexhxuygkal.cloudfront.net/pics/Color" + colornumber + ".png"
             $('#modelColor').attr("src",path);
+
+            
             console.log('right ', colornumber);
+
         }
 
         function leftSelect(){
@@ -190,8 +203,14 @@
                 colornumber = 7
             }
             localStorage.setItem("cookieColor",colornumber.toString());
+
+            // a = img id="headicon01" src="https://d1xeexhxuygkal.cloudfront.net/pics/headicon0.png"
             let path = "https://d1xeexhxuygkal.cloudfront.net/pics/Color" + colornumber + ".png"
             $('#modelColor').attr("src",path);
+
+            // let iconpath = "https://d1xeexhxuygkal.cloudfront.net/pics/headicon"+ colornumber +".png"
+            // $('#headicon01').attr("src",iconpath);
+
             // src("./pics/right-button.png");
             console.log('left', localStorage.getItem("cookieColor"));
         }

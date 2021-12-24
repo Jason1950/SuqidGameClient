@@ -1,10 +1,9 @@
 import {stateTurnOutput, stateStartOutput} from './stateAPI.js'
 // import {animationToLose} from './webglCanvas.js'
 
-const testWinCount = 100;
-const formalWinCount = 300;
-
-let winCount = formalWinCount;
+const Core = 100;
+const AWS = 300;
+let winCount = AWS;
 
 // para init
 let count = 0
