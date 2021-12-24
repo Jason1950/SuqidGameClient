@@ -8,7 +8,7 @@ let apiEndState = false;
 let lastState = false;
 let count = 0;
 
-const server = 'AWS';
+const server = 'Core';
 
 const urlCoreServer = 'https://core-srv-dev.appxervice.com';
 const urlAWSServer = 'https://taoyuan-rosegame.sstcxervice.com';

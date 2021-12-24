@@ -13,7 +13,7 @@
     const Core = 40;
     const AWS = 120;
 
-    let endConditionCount = AWS;
+    let endConditionCount = Core;
 
 
     const  AWSPath = 'https://d1xeexhxuygkal.cloudfront.net/S3webgl'

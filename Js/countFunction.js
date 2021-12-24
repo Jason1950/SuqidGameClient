@@ -3,7 +3,7 @@ import {stateTurnOutput, stateStartOutput} from './stateAPI.js'
 
 const Core = 100;
 const AWS = 300;
-let winCount = AWS;
+let winCount = Core;
 
 // para init
 let count = 0
